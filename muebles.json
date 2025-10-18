@@ -1,0 +1,38 @@
+[
+  {
+    "id": "inf_001",
+    "nombre": "Gabinete Inferior (2 Puertas)",
+    "tipo": "inferior",
+    "imagen": "static/img/muebles/mueble-inf-2p.png"
+  },
+  {
+    "id": "inf_002",
+    "nombre": "Gabinete Inferior (Cajonera)",
+    "tipo": "inferior",
+    "imagen": "static/img/muebles/mueble-inf-cajones.png"
+  },
+  {
+    "id": "inf_003",
+    "nombre": "Espacio para Estufa",
+    "tipo": "inferior",
+    "imagen": "static/img/muebles/mueble-inf-estufa.png"
+  },
+  {
+    "id": "sup_001",
+    "nombre": "Alacena (2 Puertas)",
+    "tipo": "superior",
+    "imagen": "static/img/muebles/mueble-sup-2p.png"
+  },
+  {
+    "id": "sup_002",
+    "nombre": "Alacena (1 Puerta)",
+    "tipo": "superior",
+    "imagen": "static/img/muebles/mueble-sup-1p.png"
+  },
+  {
+    "id": "sup_003",
+    "nombre": "Alacena (Microondas)",
+    "tipo": "superior",
+    "imagen": "static/img/muebles/mueble-sup-micro.png"
+  }
+]

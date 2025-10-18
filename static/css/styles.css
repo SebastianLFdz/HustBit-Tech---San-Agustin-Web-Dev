@@ -1,0 +1,115 @@
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 70px;
+  background-color: #e8e4dc; /* fondo más oscuro elegante */
+  color: #333;
+}
+
+/* Banner */
+.banner {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)),
+              url('https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1600&q=80') center/cover;
+  height: 60vh;
+}
+
+/* Títulos */
+.section-title {
+  color: #a27842;
+}
+
+/* Botón */
+.btn-light {
+  color: #333;
+  background-color: #d4b98a;
+  border: none;
+  transition: all 0.3s ease;
+}
+.btn-light:hover {
+  background-color: #c5a773;
+  transform: translateY(-2px);
+}
+
+/* Tarjetas */
+.card-img-top {
+  height: 260px;
+  object-fit: cover;
+}
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* Footer */
+.footer {
+  background-color: #2c2c2c;
+}
+.footer i:hover {
+  color: #c9a66b;
+}
+
+/* WhatsApp flotante */
+.whatsapp-float {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #25d366;
+  color: #fff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  z-index: 1000;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  background-color: #1ebe5d;
+}
+
+/* Animaciones */
+.animate-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1s ease forwards;
+}
+.animate-up.delay-1 { animation-delay: 0.3s; }
+.animate-up.delay-2 { animation-delay: 0.6s; }
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+.fade-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.navbar .btn-dark {
+  border-radius: 25px;
+  background-color: #2b2b2b;
+  border: none;
+  transition: all 0.3s ease;
+}
+.navbar .btn-dark:hover {
+  background-color: #444;
+  transform: translateY(-2px);
+}
+.navbar .btn-dark i {
+  font-size: 0.9rem;
+}
+
