@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contacto | San Agustín Cocinas</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" />
+
+  <!-- Font / Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+  <style>
+    :root{
+      --bg-gradient: linear-gradient(180deg, #2b2f38 0%, #1e232d 100%);
+      --beige: #e8e4dc;
+      --gold: #bfa888;
+      --muted: #d0ccc4;
+      --white: #ffffff;
+    }
+
+    html,body{height:100%;scroll-behavior:smooth;}
+    body{
+      margin:0;
+      font-family:"Poppins",sans-serif;
+      background:var(--bg-gradient);
+      color:var(--muted);
+      overflow-x:hidden;
+    }
+
+    /* NAV */
+    .navbar{
+      background:transparent !important;
+      transition:all .3s ease;
+      padding:.8rem 0;
+    }
+    .navbar.scrolled{
+      background:rgba(30,30,35,.8)!important;
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .navbar-brand{color:#fff!important;font-weight:700;font-size:1.1rem;}
+    .nav-link{color:#ddd!important;font-weight:500;margin-right:.25rem;}
+    .nav-link:hover{color:var(--gold)!important;}
+    .nav-link.active{color:var(--gold)!important;}
+    .nav-login{
+      background:var(--gold);
+      color:#111!important;
+      border-radius:28px;
+      padding:8px 16px;
+      font-weight:600;
+      text-decoration:none;
+      border:none;
+    }
+
+    .navbar-toggler{border:none;}
+    .navbar-toggler-icon{filter:invert(1) brightness(1.2);}
+
+    /* SECTIONS */
+    .section{padding:120px 0;}
+    .container-narrow{max-width:1100px;margin:0 auto;padding:0 18px;}
+    .section-title{color:var(--gold);font-size:clamp(22px,2.6vw,32px);font-weight:700;margin-bottom:12px;text-align:center;}
+    .section-lead{color:#ddd;margin-bottom:40px;text-align:center;}
+
+    .contact-wrapper{
+      display:flex;
+      flex-wrap:wrap;
+      gap:32px;
+      align-items:stretch;
+      justify-content:space-between;
+    }
+
+    .contact-info{
+      flex:1 1 420px;
+      background:rgba(255,255,255,0.04);
+      border-radius:16px;
+      padding:32px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.4);
+      color:#ddd;
+    }
+    .contact-info h5{color:var(--gold);font-weight:700;margin-bottom:12px;}
+    .contact-info p{margin-bottom:18px;}
+
+    .contact-info img{
+      width:100%;
+      border-radius:14px;
+      margin-top:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.4);
+      object-fit:cover;
+    }
+
+    .contact-form{
+      flex:1 1 580px;
+      background:rgba(255,255,255,0.03);
+      border-radius:16px;
+      padding:36px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    }
+    .form-label{color:var(--white);font-weight:500;}
+    .form-control{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.15);
+      color:#fff;
+    }
+    .form-control:focus{
+      background:rgba(255,255,255,0.1);
+      color:#fff;
+      border-color:var(--gold);
+      box-shadow:0 0 0 0.2rem rgba(191,168,136,0.25);
+    }
+    .btn-submit{
+      background:linear-gradient(90deg,var(--gold),#d8c6a9);
+      border:none;
+      color:#111;
+      font-weight:700;
+      border-radius:28px;
+      padding:12px 24px;
+      width:100%;
+      transition:transform .3s ease,box-shadow .3s ease;
+    }
+    .btn-submit:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 24px rgba(191,168,136,0.3);
+    }
+
+    footer{padding:36px 18px;border-top:1px solid rgba(255,255,255,0.08);color:#ddd;background:#262626;text-align:center;}
+    .footer-bottom{margin-top:14px;font-size:13px;color:#aaa;}
+
+    .whatsapp-float{
+      position:fixed;right:22px;bottom:22px;width:62px;height:62px;border-radius:50%;
+      background:linear-gradient(180deg,#25D366,#18b955);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:24px;z-index:1400;
+      box-shadow:0 8px 30px rgba(0,0,0,0.25);
+      transition:transform .18s ease;
+      text-decoration:none;
+    }
+    .whatsapp-float:hover{transform:translateY(-6px);}
+
+    @media(max-width:767px){
+      .contact-wrapper{flex-direction:column;}
+      .contact-form,.contact-info{width:100%;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="siteNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">San Agustín Cocinas</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="referencias.html">Referencias</a></li>
+          <li class="nav-item"><a class="nav-link active" href="contacto.html">Contacto</a></li>
+          <li class="nav-item"><a class="nav-login" href="login.html">Iniciar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <section class="section" style="padding-top:140px;">
+    <div class="container-narrow">
+      <h2 class="section-title">Contáctanos</h2>
+      <p class="section-lead">Queremos conocer tu proyecto y ayudarte a crear el espacio perfecto. Completa el siguiente formulario o contáctanos directamente.</p>
+
+      <div class="contact-wrapper">
+        <!-- FORM -->
+        <div class="contact-form">
+          <form>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" class="form-control" placeholder="Ej. Ana Rodríguez" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" placeholder="tucorreo@ejemplo.com" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input type="tel" class="form-control" placeholder="(000) 000 0000">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Tipo de proyecto</label>
+                <input type="text" class="form-control" placeholder="Ej. Cocina integral, closet, centro de entretenimiento..." required>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Mensaje o detalles del proyecto</label>
+                <textarea class="form-control" rows="4" placeholder="Cuéntanos más sobre lo que deseas..." required></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Adjuntar plano o imagen (opcional)</label>
+                <input type="file" class="form-control">
+              </div>
+              <div class="col-12 mt-3">
+                <button type="submit" class="btn-submit">Enviar solicitud</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- INFO -->
+        <div class="contact-info">
+          <h5>Visítanos</h5>
+          <p>Calzada San Pedro 223, Monterrey, N.L. 64660</p>
+
+          <h5>Teléfono</h5>
+          <p>81 8138 2881</p>
+
+          <h5>Correo electrónico</h5>
+          <p>sanagustinstone@hotmail.com</p>
+
+          <h5>Horario</h5>
+          <p>
+            Lunes a Viernes: 10:30 a.m. – 6:30 p.m.<br>
+            Sábado: 10:30 a.m. – 4:30 p.m.<br>
+            Domingo: Cerrado
+          </p>
+
+          <img src="static/img/cocina4.jpg" alt="Showroom San Agustín Cocinas">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container container-narrow text-center">
+      <div style="margin-bottom:12px;">
+        <a class="me-3" href="#"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="https://wa.me/528181382881"><i class="fab fa-whatsapp fa-lg"></i></a>
+      </div>
+      <div class="footer-bottom">
+        Tel: 81 8138 2881 · Correo: <a href="mailto:sanagustinstone@hotmail.com" style="color:inherit;">sanagustinstone@hotmail.com</a><br>
+        © 2025 San Agustín Cocinas · Diseño y fabricación artesanal.
+      </div>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT -->
+  <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+  <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function(){
+      const nav=document.getElementById('siteNav');
+      function onScroll(){if(window.scrollY>50)nav.classList.add('scrolled');else nav.classList.remove('scrolled');}
+      onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+    })();
+  </script>
+</body>
+</html>

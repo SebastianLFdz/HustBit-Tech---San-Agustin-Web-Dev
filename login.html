@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Acceso | San Agustín Cocinas</title>
+  <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    :root{
+      --bg-gradient: linear-gradient(180deg, #2b2f38 0%, #1e232d 100%);
+      --gold:#bfa888; --white:#fff;
+    }
+    body{
+      font-family:'Poppins',sans-serif;
+      background:var(--bg-gradient);
+      color:var(--white);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .navbar{
+      background:transparent!important;
+      transition:all .3s ease;
+    }
+    .navbar.scrolled{
+      background:rgba(30,30,35,.8)!important;
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,.1);
+    }
+    .navbar-brand{color:#fff!important;font-weight:700;}
+    .nav-link{color:#ddd!important;font-weight:500;margin-right:.25rem;}
+    .nav-link:hover{color:var(--gold)!important;}
+    .nav-link.active{color:var(--gold)!important;}
+    .nav-login{
+      background:var(--gold);
+      color:#111!important;
+      border-radius:28px;
+      padding:8px 16px;
+      font-weight:600;
+      text-decoration:none;
+    }
+    .auth-container{
+      display:flex;justify-content:center;align-items:center;
+      min-height:90vh;padding-top:100px;
+    }
+    .auth-card{
+      background:rgba(255,255,255,0.05);
+      border-radius:20px;
+      padding:40px;
+      max-width:420px;
+      width:100%;
+      box-shadow:0 10px 25px rgba(0,0,0,0.5);
+      backdrop-filter:blur(10px);
+      text-align:center;
+    }
+    .auth-card h4{color:var(--gold);font-weight:700;margin-bottom:20px;}
+    .form-label{color:var(--white);font-weight:500;}
+    .form-control{
+      background:rgba(255,255,255,0.07);
+      border:none;
+      color:#fff;
+    }
+    .form-control:focus{
+      border:1px solid var(--gold);
+      box-shadow:0 0 0 0.25rem rgba(191,168,136,0.25);
+    }
+    .auth-btn{
+      background:linear-gradient(90deg,var(--gold),#d9c7ac);
+      border:none;
+      color:#111;
+      font-weight:700;
+      border-radius:28px;
+      padding:12px;
+      width:100%;
+      transition:all .3s ease;
+    }
+    .auth-btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 24px rgba(191,168,136,0.3);
+    }
+    footer{
+      padding:36px 18px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      color:#ddd;
+      background:#262626;
+      text-align:center;
+    }
+    .footer-bottom{margin-top:14px;font-size:13px;color:#aaa;}
+    .whatsapp-float{
+      position:fixed;right:22px;bottom:22px;width:62px;height:62px;border-radius:50%;
+      background:linear-gradient(180deg,#25D366,#18b955);
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;font-size:24px;z-index:1400;
+      box-shadow:0 8px 30px rgba(0,0,0,0.25);
+      transition:transform .18s ease;text-decoration:none;
+    }
+    .whatsapp-float:hover{transform:translateY(-6px);}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="siteNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">San Agustín Cocinas</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="referencias.html">Referencias</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+          <li class="nav-item"><a class="nav-login active" href="login.html">Iniciar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LOGIN -->
+  <section class="auth-container container">
+    <div class="auth-card">
+      <i class="fa-solid fa-user-lock fa-3x mb-3 text-light"></i>
+      <h4>Acceso Personal Autorizado</h4>
+
+      <!-- Envío al servidor Flask -->
+      <form method="POST" action="/login">
+        <div class="mb-3 text-start">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" class="form-control" placeholder="admin" required>
+        </div>
+        <div class="mb-3 text-start">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" class="form-control" placeholder="********" required>
+        </div>
+        <button type="submit" class="auth-btn mt-3">Iniciar Sesión</button>
+      </form>
+
+      {% if error %}
+        <div class="text-danger mt-3">{{ error }}</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container text-center">
+      <div style="margin-bottom:12px;">
+        <a class="me-3" href="#"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="https://wa.me/528181382881"><i class="fab fa-whatsapp fa-lg"></i></a>
+      </div>
+      <div class="footer-bottom">
+        Tel: 81 8138 2881 · Correo: <a href="mailto:sanagustinstone@hotmail.com" style="color:inherit;">sanagustinstone@hotmail.com</a><br>
+        © 2025 San Agustín Cocinas · Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP -->
+  <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+  <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const nav=document.getElementById('siteNav');
+    window.addEventListener('scroll',()=>{if(window.scrollY>50)nav.classList.add('scrolled');else nav.classList.remove('scrolled');});
+  </script>
+</body>
+</html>
