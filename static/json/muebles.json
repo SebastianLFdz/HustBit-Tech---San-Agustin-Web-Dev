@@ -34,11 +34,5 @@
     "nombre": "Alacena (Microondas)",
     "tipo": "superior",
     "imagen": "static/img/muebles/mueble-sup-micro.png"
-  },
-  {
-    "id": "sup_004",
-    "nombre": "Alacena (popositos)",
-    "tipo": "superior",
-    "imagen": "static/img/muebles/perrito.jpg"
   }
 ]
