@@ -113,3 +113,15 @@ body {
   font-size: 0.9rem;
 }
 
+/* --- INICIO: NUEVOS ESTILOS PARA PREVIEW (Paso 3) --- */
+#carousel-mueble {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #1e232d;
+}
+.carousel-item img {
+  width: 100%;
+  height: 400px; /* Altura fija para el carrusel */
+  object-fit: contain;
+}
+/* --- FIN: NUEVOS ESTILOS PARA PREVIEW --- */

@@ -162,6 +162,19 @@
     }
     /* --- FIN: NUEVOS ESTILOS PARA MODAL --- */
 
+    /* --- INICIO: NUEVOS ESTILOS PARA PREVIEW (Paso 3) --- */
+    #carousel-mueble {
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #1e232d;
+    }
+    .carousel-item img {
+      width: 100%;
+      height: 400px; /* Altura fija para el carrusel */
+      object-fit: contain;
+    }
+    /* --- FIN: NUEVOS ESTILOS PARA PREVIEW --- */
+
   </style>
 </head>
 <body>
@@ -221,11 +234,30 @@
     </div>
 
     <div id="simulador-area" class="hidden">
-      <img id="simulador-fondo" src="" alt="Fondo de cocina" />
-      
-      <div id="simulador-slots">
+      </div>
+
+    <div id="simulador-resumen" class="hidden text-start mt-5">
+      <h3 class="text-white">Desglose de Muebles</h3>
+      <p class="text-muted">Lista de módulos añadidos a la cocina.</p>
+      <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Mueble</th>
+              <th scope="col">Ancho</th>
+              <th scope="col">Alto</th>
+            </tr>
+          </thead>
+          <tbody id="lista-desglose-muebles">
+            <tr>
+              <td colspan="3" class="text-center text-muted">Aún no has añadido muebles.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+    <hr class="bg-light mt-5"> <p>Usa el menú de tu usuario (arriba a la derecha) para salir o revisar tu cuenta.</p>
+  </div>
     
     <hr class="bg-light mt-5"> <p>Usa el menú de tu usuario (arriba a la derecha) para salir o revisar tu cuenta.</p>
   </div>
@@ -247,52 +279,89 @@
   <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
   <div class="modal fade" id="modal-seleccion-mueble" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content" style="background-color: #2a2f3a; color: #fff;">
-        <div class="modal-header border-secondary">
-          <h5 class="modal-title" id="modal-titulo">Selecciona un mueble</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div id="modal-cuerpo" class="row g-3">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="background-color: #2a2f3a; color: #fff;">
+      
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title" id="modal-titulo">Selecciona un mueble</h5>
+        <button id="btn-volver-grid" type="button" class="btn btn-outline-light btn-sm me-auto ms-3 hidden">
+          <i class="fa-solid fa-arrow-left me-1"></i> Volver
+        </button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        
+        <div id="modal-cuerpo" class="row g-3">
+          </div>
+
+        <div id="modal-preview" class="hidden">
+          <div class="row">
+            <div class="col-md-8">
+              <div id="carousel-mueble" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators" id="carousel-preview-indicators">
+                  </div>
+                <div class="carousel-inner" id="carousel-preview-inner">
+                  </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-mueble" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-mueble" data-bs-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
             </div>
+            
+            <div class="col-md-4 d-flex flex-column justify-content-center text-center">
+              <h4 id="preview-nombre-mueble" class="text-white">Nombre Mueble</h4>
+              <p class="text-muted">Previsualiza las fotos y añádelo a tu cocina.</p>
+              <button id="btn-add-mueble" class="btn btn-warning btn-lg mt-3">
+                <i class="fa-solid fa-plus me-1"></i> Añadir a la Cocina
+              </button>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
+</div>
   <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
 
       // --- 1. VARIABLES GLOBALES ---
-      let baseDeDatosMuebles = []; // Aquí guardaremos los muebles del JSON
-      let slotActivo = null; // Para saber qué slot estamos editando
+      let baseDeDatosMuebles = [];
+      let slotActivo = null;
       const modalElement = document.getElementById('modal-seleccion-mueble');
       const modalBootstrap = new bootstrap.Modal(modalElement);
 
-      // --- 2. DEFINIR POSICIONES DE LOS SLOTS ---
-      // ¡¡IMPORTANTE!! Ahora añadimos la propiedad "tipo"
-      // para saber si es "inferior" o "superior".
+      // ¡NUEVAS VARIABLES (Paso 4)!
+      let desgloseDeMuebles = {}; // Para guardar {slotId: {datos...}}
+      let tipoCocinaActual = null;  // Para saber si es 'pequena' o 'grande'
+      let resumenDiv = document.getElementById('simulador-resumen');
+      let listaDesgloseUI = document.getElementById('lista-desglose-muebles');      
+
+      // --- 2. POSICIONES (Actualizado Paso 4) ---
+      // ¡¡NUEVO!! Añadimos medidas reales (ej: ancho_cm, alto_cm)
       const posiciones = {
         pequena: [
-          // !! ESTAS RUTAS SON DE EJEMPLO, AJUSTA TUS POSICIONES !!
-          { top: '60%', left: '10%', w: '100px', h: '150px', tipo: 'inferior' }, // Slot 0
-          { top: '60%', left: '30%', w: '100px', h: '150px', tipo: 'inferior' }, // Slot 1
-          { top: '60%', left: '50%', w: '100px', h: '150px', tipo: 'inferior' }, // Slot 2
-          { top: '30%', left: '10%', w: '100px', h: '100px', tipo: 'superior' }, // Slot 3
-          { top: '30%', left: '30%', w: '100px', h: '100px', tipo: 'superior' }  // Slot 4
+          { top: '60%', left: '10%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '30%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '50%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '80 cm', alto_cm: '90 cm' }, // Estufa
+          { top: '30%', left: '10%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '70 cm' },
+          { top: '30%', left: '30%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '70 cm' }
         ],
         grande: [
-          // !! ESTAS RUTAS SON DE EJEMPLO, AJUSTA TUS POSICIONES !!
-          { top: '60%', left: '5%',  w: '100px', h: '150px', tipo: 'inferior' }, // Slot 0
-          { top: '60%', left: '20%', w: '100px', h: '150px', tipo: 'inferior' }, // Slot 1
-          { top: '60%', left: '35%', w: '100px', h: '150px', tipo: 'inferior' }, // Slot 2
-          { top: '60%', left: '70%', w: '100px', h: '150px', tipo: 'inferior' }, // Slot 3
-          { top: '30%', left: '5%',  w: '100px', h: '100px', tipo: 'superior' }, // Slot 4
-          { top: '30%', left: '20%', w: '100px', h: '100px', tipo: 'superior' }, // Slot 5
-          { top: '30%', left: '35%', w: '100px', h: '100px', tipo: 'superior' }, // Slot 6
-          { top: '30%', left: '70%', w: '100px', h: '100px', tipo: 'superior' }  // Slot 7
+          { top: '60%', left: '5%',  w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '20%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '80 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '35%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '70%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '90 cm', alto_cm: '90 cm' }, // Esquina
+          { top: '30%', left: '5%',  w: '100px', h: '100px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '70 cm' },
+          { top: '30%', left: '20%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '80 cm', alto_cm: '70 cm' },
+          { top: '30%', left: '35%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '70 cm' },
+          { top: '30%', left: '70%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '90 cm', alto_cm: '70 cm' } // Esquina
         ]
       };
 
@@ -303,22 +372,23 @@
       const btnGrande = document.getElementById('btn-cocina-grande');
       const simFondo = document.getElementById('simulador-fondo');
       const simSlots = document.getElementById('simulador-slots');
+
+      // Elementos del Modal
       const modalTitulo = document.getElementById('modal-titulo');
-      const modalCuerpo = document.getElementById('modal-cuerpo');
+      const modalCuerpoGrid = document.getElementById('modal-cuerpo');
+      const modalPreview = document.getElementById('modal-preview');
+      const btnVolverGrid = document.getElementById('btn-volver-grid');
+      const btnAddMueble = document.getElementById('btn-add-mueble');
+      const previewNombre = document.getElementById('preview-nombre-mueble');
+      const carouselIndicators = document.getElementById('carousel-preview-indicators');
+      const carouselInner = document.getElementById('carousel-preview-inner');
+
 
       // --- 4. CARGAR DATOS INICIALES (MUEBLES) ---
-      // !! Asegúrate de que tu archivo 'muebles.json' está en la misma carpeta
-      // !! o en la ruta correcta.
       fetch('static/json/muebles.json')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-          }
-          return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
           baseDeDatosMuebles = data;
-          console.log('Muebles cargados:', baseDeDatosMuebles);
         })
         .catch(error => console.error('Error al cargar muebles.json:', error));
 
@@ -333,100 +403,198 @@
         iniciarSimulador('grande');
       });
 
-      // --- 6. FUNCIÓN [NUEVA]: ABRIR MODAL ---
+      // [NUEVO] Evento para el botón "Volver a la cuadrícula"
+      btnVolverGrid.addEventListener('click', () => {
+        mostrarGridView(); // Muestra la cuadrícula, oculta el preview
+      });
+
+      // [NUEVO] Evento para el botón "Añadir a la Cocina"
+      btnAddMueble.addEventListener('click', (e) => {
+        const imgSlot = e.currentTarget.dataset.imgSlot; 
+        // ¡NUEVO (Paso 4)! Obtener datos para el desglose
+        const muebleId = e.currentTarget.dataset.muebleId;
+        const muebleNombre = e.currentTarget.dataset.muebleNombre;
+        const slotId = slotActivo.dataset.slotId;
+        
+        // Obtenemos los datos de posición (incluyendo medidas reales)
+        const posData = posiciones[tipoCocinaActual][slotId];
+
+        // Guardamos en nuestro desglose
+        desgloseDeMuebles[slotId] = {
+          nombre: muebleNombre,
+          ancho: posData.ancho_cm,
+          alto: posData.alto_cm
+        };
+        
+        // Aplicamos la imagen SIN FONDO al slot
+        slotActivo.style.backgroundImage = `url(${imgSlot})`;
+        slotActivo.innerHTML = '';
+        slotActivo.style.border = '1px solid var(--gold)';
+
+        // Cerramos el modal
+        modalBootstrap.hide();
+        slotActivo = null;
+
+        // ¡NUEVO! Actualizamos la tabla
+        actualizarDesgloseUI();
+      });
+
+      // --- 6. FUNCIONES DEL MODAL ---
+
+      // [MODIFICADA] Esta función ahora prepara el modal y la cuadrícula
       function abrirModalConMuebles(tipoSlot) {
-        // Filtrar muebles según el tipo de slot (inferior/superior)
-        const mueblesFiltrados = baseDeDatosMuebles.filter(mueble => mueble.tipo === tipoSlot);
+        mostrarGridView(tipoSlot); // Mostramos la cuadrícula
         
-        // Limpiar modal
-        modalCuerpo.innerHTML = '';
-
-        // Cambiar título del modal
-        modalTitulo.textContent = `Selecciona un mueble ${tipoSlot}`;
-
-        // Opción para limpiar el slot
-        const opcionLimpiar = `
-          <div class="col-md-4">
-            <a href="#" class="mueble-opcion" data-id="limpiar">
-              <div style="width: 100%; height: 120px; display: grid; place-content: center; font-size: 30px; color: #777;">
-                <i class="fa-solid fa-ban"></i>
-              </div>
-              <h6>Quitar mueble</h6>
-            </a>
-          </div>
-        `;
-        modalCuerpo.innerHTML += opcionLimpiar;
-        
-        // Cargar muebles en el modal
-        mueblesFiltrados.forEach(mueble => {
-          const htmlMueble = `
-            <div class="col-md-4">
-              <a href="#" class="mueble-opcion" data-id="${mueble.id}" data-img="${mueble.imagen}">
-                <img src="${mueble.imagen}" alt="${mueble.nombre}">
-                <h6>${mueble.nombre}</h6>
-              </a>
-            </div>
-          `;
-          // !! Asegúrate que las rutas en 'mueble.imagen' sean correctas
-          // !! ej: 'imagenes/muebles/mueble-inf-2p.png'
-          modalCuerpo.innerHTML += htmlMueble;
-        });
-
-        // [IMPORTANTE] Añadir listeners a las *nuevas* opciones
-        modalCuerpo.querySelectorAll('.mueble-opcion').forEach(opcion => {
-          opcion.addEventListener('click', seleccionarMueble);
+        // Añadir listeners a las opciones de la cuadrícula
+        modalCuerpoGrid.querySelectorAll('.mueble-opcion').forEach(opcion => {
+          opcion.addEventListener('click', handleGridClick);
         });
 
         // Abrir el modal
         modalBootstrap.show();
       }
 
-      // --- 7. FUNCIÓN [NUEVA]: SELECCIONAR MUEBLE DEL MODAL ---
-      function seleccionarMueble(e) {
+      // [NUEVA] Maneja el clic en una opción de la cuadrícula
+      // [NUEVA] Maneja el clic en una opción de la cuadrícula
+      function handleGridClick(e) {
         e.preventDefault();
-        const opcionClicada = e.currentTarget;
-        const muebleId = opcionClicada.dataset.id;
-        
+        const muebleId = e.currentTarget.dataset.id;
+
         if (muebleId === 'limpiar') {
-          // Limpiar el slot
+          // Opción "Quitar mueble"
           slotActivo.style.backgroundImage = 'none';
           slotActivo.innerHTML = '<i class="fa-solid fa-plus"></i>';
-          slotActivo.style.border = '2px dashed var(--gold)'; // Restaurar borde
-        } else {
-          // Aplicar el mueble al slot
-          const imgUrl = opcionClicada.dataset.img;
-          slotActivo.style.backgroundImage = `url(${imgUrl})`;
-          slotActivo.innerHTML = ''; // Quitar el '+'
-          slotActivo.style.border = '1px solid var(--gold)'; // Borde más sutil
-        }
+          slotActivo.style.border = '2px dashed var(--gold)';
+          
+          // ¡NUEVO (Paso 4)! Limpiar del desglose
+          const slotId = slotActivo.dataset.slotId;
+          delete desgloseDeMuebles[slotId]; // Elimina el item del objeto
+          actualizarDesgloseUI(); // Actualiza la tabla
 
-        // Cerrar el modal
-        modalBootstrap.hide();
-        slotActivo = null; // Limpiar slot activo
+          modalBootstrap.hide();
+          slotActivo = null;
+        } else {
+          // Clic en un mueble -> Mostrar previsualización
+          const mueble = baseDeDatosMuebles.find(m => m.id === muebleId);
+          if (mueble) {
+            mostrarPreview(mueble);
+          }
+        }
       }
 
-      // --- 8. FUNCIÓN PRINCIPAL (MODIFICADA) ---
+      // [NUEVA] Muestra la vista de cuadrícula y oculta el preview
+      function mostrarGridView(tipoSlot) {
+        // Rellenar la cuadrícula solo si se pasa el tipoSlot (al abrir por primera vez)
+        if (tipoSlot) {
+          const mueblesFiltrados = baseDeDatosMuebles.filter(mueble => mueble.tipo === tipoSlot);
+          modalCuerpoGrid.innerHTML = ''; // Limpiar
+
+          // Opción "Quitar mueble"
+          modalCuerpoGrid.innerHTML += `
+            <div class="col-md-4">
+              <a href="#" class="mueble-opcion" data-id="limpiar">
+                <div style="width: 100%; height: 120px; display: grid; place-content: center; font-size: 30px; color: #777;">
+                  <i class="fa-solid fa-ban"></i>
+                </div>
+                <h6>Quitar mueble</h6>
+              </a>
+            </div>
+          `;
+          
+          // Cargar muebles
+          mueblesFiltrados.forEach(mueble => {
+            modalCuerpoGrid.innerHTML += `
+              <div class="col-md-4">
+                <a href="#" class="mueble-opcion" data-id="${mueble.id}">
+                  <img src="${mueble.imagen_grid}" alt="${mueble.nombre}">
+                  <h6>${mueble.nombre}</h6>
+                </a>
+              </div>
+            `;
+          });
+        }
+        
+        // Ajustar visibilidad y título
+        modalTitulo.textContent = `Selecciona un mueble ${tipoSlot || ''}`;
+        modalCuerpoGrid.classList.remove('hidden');
+        modalPreview.classList.add('hidden');
+        btnVolverGrid.classList.add('hidden');
+      }
+
+      // [NUEVA] Muestra la vista de preview y oculta la cuadrícula
+      function mostrarPreview(mueble) {
+        // Ajustar visibilidad y título
+        modalTitulo.textContent = mueble.nombre;
+        modalCuerpoGrid.classList.add('hidden');
+        modalPreview.classList.remove('hidden');
+        btnVolverGrid.classList.remove('hidden');
+        modalTitulo.textContent = mueble.nombre;
+        modalCuerpoGrid.classList.add('hidden');
+        modalPreview.classList.remove('hidden');
+        btnVolverGrid.classList.remove('hidden');
+
+        // Rellenar datos del preview
+        previewNombre.textContent = mueble.nombre;
+        // previewImgSlot.src = mueble.imagen_slot; // Imagen con fondo
+
+        // ¡MODIFICADO (Paso 4)! Guardamos MÁS datos en el botón
+        btnAddMueble.dataset.imgSlot = mueble.imagen_slot;
+        btnAddMueble.dataset.muebleId = mueble.id;
+        btnAddMueble.dataset.muebleNombre = mueble.nombre;
+
+        // Limpiar carrusel anterior
+        carouselIndicators.innerHTML = '';
+        carouselInner.innerHTML = '';
+
+        // Construir el carrusel con las imágenes "Con Fondo"
+        mueble.preview_cf.forEach((imgUrl, index) => {
+          const esActiva = (index === 0) ? 'active' : '';
+
+          // Añadir indicador (puntito)
+          carouselIndicators.innerHTML += `
+            <button type="button" data-bs-target="#carousel-mueble" data-bs-slide-to="${index}" 
+                    class="${esActiva}" ${esActiva ? 'aria-current="true"' : ''}></button>
+          `;
+
+          // Añadir imagen al carrusel
+          carouselInner.innerHTML += `
+            <div class="carousel-item ${esActiva}">
+              <img src="${imgUrl}" alt="Vista ${index + 1} de ${mueble.nombre}">
+            </div>
+          `;
+        });
+      }
+
+
+      // --- 7. FUNCIÓN PRINCIPAL (MODIFICADA Paso 4) ---
       function iniciarSimulador(tipo) {
         selDiv.classList.add('hidden');
         simArea.classList.remove('hidden');
         simSlots.innerHTML = '';
+
+        // ¡NUEVO! Mostrar y reiniciar el desglose
+        resumenDiv.classList.remove('hidden');
+        desgloseDeMuebles = {}; // Limpia el desglose anterior
+        tipoCocinaActual = tipo;  // Guarda el tipo de cocina
+        actualizarDesgloseUI(); // Actualiza la tabla (la mostrará vacía)
+
         let slotsConfig;
         
         if (tipo === 'pequena') {
-          // !! Reemplaza esto con la RUTA REAL de tu imagen
-          simFondo.src = 'static/img/cocina-pequena-fondo.jpg'; // Usando la ruta que tenías
+          simFondo.src = 'static/img/cocina-pequena-fondo.jpg'; 
           slotsConfig = posiciones.pequena;
         } else {
-          // !! Reemplaza esto con la RUTA REAL de tu imagen
-          simFondo.src = 'static/img/cocina-grande-fondo.jpg'; // Usando la ruta que tenías
+          simFondo.src = 'static/img/cocina-grande-fondo.jpg';
           slotsConfig = posiciones.grande;
         }
 
         slotsConfig.forEach((pos, index) => {
           const slot = document.createElement('div');
           slot.className = 'mueble-slot';
-          slot.dataset.slotId = index;
-          slot.dataset.tipo = pos.tipo; // <-- ¡NUEVO! Guardamos el tipo
+          // ¡IMPORTANTE! Guardamos el 'index' como 'slotId'
+          // Esto es clave para conectar el slot con sus datos
+          slot.dataset.slotId = index; 
+          slot.dataset.tipo = pos.tipo;
           
           slot.style.top = pos.top;
           slot.style.left = pos.left;
@@ -435,17 +603,46 @@
           
           slot.innerHTML = '<i class="fa-solid fa-plus"></i>';
 
-          // [NUEVO] Añadir el listener para abrir el modal
           slot.addEventListener('click', (e) => {
-            slotActivo = e.currentTarget; // Guardamos el slot que se clicó
-            const tipoSlot = slotActivo.dataset.tipo; // Obtenemos el tipo (inf/sup)
-            abrirModalConMuebles(tipoSlot); // Abrimos el modal con los muebles de ese tipo
+            slotActivo = e.currentTarget; 
+            const tipoSlot = slotActivo.dataset.tipo;
+            abrirModalConMuebles(tipoSlot);
           });
 
           simSlots.appendChild(slot);
         });
       }
+      // --- NUEVA FUNCIÓN (Paso 4) ---
+      // Actualiza la tabla HTML con los datos de 'desgloseDeMuebles'
+      function actualizarDesgloseUI() {
+        // Limpiamos la tabla
+        listaDesgloseUI.innerHTML = '';
 
+        // Obtenemos las claves (slotId) de los muebles añadidos
+        const mueblesAñadidosIds = Object.keys(desgloseDeMuebles);
+
+        if (mueblesAñadidosIds.length === 0) {
+          // Si no hay muebles, mostrar mensaje
+          listaDesgloseUI.innerHTML = `
+            <tr>
+              <td colspan="3" class="text-center text-muted">Aún no has añadido muebles.</td>
+            </tr>
+          `;
+        } else {
+          // Si hay muebles, crear una fila por cada uno
+          mueblesAñadidosIds.forEach(slotId => {
+            const mueble = desgloseDeMuebles[slotId];
+            const filaHtml = `
+              <tr>
+                <td><strong>${mueble.nombre}</strong></td>
+                <td>${mueble.ancho}</td>
+                <td>${mueble.alto}</td>
+              </tr>
+            `;
+            listaDesgloseUI.innerHTML += filaHtml;
+          });
+        }
+      }
     });
   </script>
   </body>
