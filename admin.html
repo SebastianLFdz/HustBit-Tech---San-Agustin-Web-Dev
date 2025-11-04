@@ -350,11 +350,14 @@
       // ¡¡NUEVO!! Añadimos medidas reales (ej: ancho_cm, alto_cm)
       const posiciones = {
         pequena: [
-          { top: '60%', left: '10%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
-          { top: '60%', left: '30%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
-          { top: '60%', left: '50%', w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '80 cm', alto_cm: '90 cm' }, // Estufa
-          { top: '30%', left: '10%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '70 cm' },
-          { top: '30%', left: '30%', w: '100px', h: '100px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '70 cm' }
+          { top: '60%', left: '3.5%', w: '236px', h: '238px', tipo: 'inferior', ancho_cm: '90 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '27%', w: '233px', h: '238px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '50%', w: '230px', h: '238px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '60%', left: '73%', w: '236px', h: '238px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '11.37%', left: '3.5%', w: '236px', h: '275px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '11.37%', left: '27%', w: '233px', h: '275px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '11.37%', left: '50%', w: '230px', h: '275px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '90 cm' },
+          { top: '11.37%', left: '73%', w: '236px', h: '275px', tipo: 'superior', ancho_cm: '60 cm', alto_cm: '90 cm' },
         ],
         grande: [
           { top: '60%', left: '5%',  w: '100px', h: '150px', tipo: 'inferior', ancho_cm: '60 cm', alto_cm: '90 cm' },
@@ -584,7 +587,7 @@
         let slotsConfig;
         
         if (tipo === 'pequena') {
-          simFondo.src = 'static/img/cocina-pequena-fondo.jpg'; 
+          simFondo.src = 'static/img/cocina-pequena-fondo.png'; 
           slotsConfig = posiciones.pequena;
         } else {
           simFondo.src = 'static/img/cocina-grande-fondo.jpg';
