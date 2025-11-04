@@ -3,6 +3,8 @@
     "id": "inf_001",
     "nombre": "Cajonera (3 Partes)",
     "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_001/CF/mueble-inf-3p-Front-CF.jpeg",
     "imagen_slot": "static/img/muebles/inf_001/SF/mueble-inf-3p-Front-SF.jpeg",
     "preview_cf": [
@@ -15,6 +17,8 @@
     "id": "inf_002",
     "nombre": "Cajonera (2 Partes)",
     "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_002/CF/mueble-inf-2p-Front-CF.jpeg",
     "imagen_slot": "static/img/muebles/inf_002/SF/mueble-inf-2p-Front-SF.jpeg",
     "preview_cf": [
@@ -27,6 +31,8 @@
     "id": "inf_003",
     "nombre": "Basurero extraible",
     "tipo": "inferior",
+    "ancho_cm": "25 cm",
+    "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_003/CF/mueble-inf-basurero-Front-CF.png",
     "imagen_slot": "static/img/muebles/inf_003/SF/mueble-inf-basurero-Front-SF.png",
     "preview_cf": [
@@ -39,6 +45,8 @@
     "id": "inf_004",
     "nombre": "Estantería (1 Puerta)",
     "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_004/CF/mueble-inf-estanteria 1 puerta-Front-CF.jpeg",
     "imagen_slot": "static/img/muebles/inf_004/SF/mueble-inf-estanteria 1 puerta-Front-SF.jpeg",
     "preview_cf": [
@@ -51,6 +59,8 @@
     "id": "inf_005",
     "nombre": "Estantería (2 Puertas)",
     "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_005/CF/mueble-inf-estanteria 2 puerta-Front-CF.jpeg",
     "imagen_slot": "static/img/muebles/inf_005/SF/mueble-inf-estanteria 2 puerta-Front-SF.jpeg",
     "preview_cf": [
@@ -63,6 +73,8 @@
     "id": "inf_006",
     "nombre": "Columna Extraible",
     "tipo": "inferior",
+    "ancho_cm": "30 cm",
+    "alto_cm": "180 cm",
     "imagen_grid": "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Front-CF.jpeg",
     "imagen_slot": "static/img/muebles/inf_006/SF/mueble-inf-columna extraible-Front-SF.jpeg",
     "preview_cf": [
@@ -75,6 +87,8 @@
     "id": "inf_007",
     "nombre": "Columna (1 Puerta)",
     "tipo": "inferior",
+    "ancho_cm": "30 cm",
+    "alto_cm": "180 cm",
     "imagen_grid": "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Front-CF.jpeg",
     "imagen_slot": "static/img/muebles/inf_007/SF/mueble-inf-columna 1 puerta-Front-SF.jpeg",
     "preview_cf": [
@@ -87,6 +101,8 @@
     "id": "sup_001",
     "nombre": "Alacena (2 Puertas)",
     "tipo": "superior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "40 cm",
     "imagen_grid": "static/img/muebles/sup_001/CF/mueble-sup-1p.png",
     "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-1p.png",
     "preview_cf": [
