@@ -122,7 +122,7 @@
       color: var(--gold);
       font-size: 24px;
       transition: all 0.2s ease;
-      background-size: contain;
+      background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
     }
@@ -435,10 +435,10 @@
       // ¡¡NUEVO!! Añadimos medidas reales (ej: ancho_cm, alto_cm)
       const posiciones = {
         pequena: [
-          { top: '60%', left: '3.5%', w: '236px', h: '238px', tipo: 'inferior'},
-          { top: '60%', left: '27%', w: '233px', h: '238px', tipo: 'inferior'},
-          { top: '60%', left: '50%', w: '230px', h: '238px', tipo: 'inferior'},
-          { top: '60%', left: '73%', w: '236px', h: '238px', tipo: 'inferior'},
+          { top: '60%', left: '3.5%', w: '236px', h: '348px', tipo: 'inferior'},
+          { top: '60%', left: '27%', w: '233px', h: '348px', tipo: 'inferior'},
+          { top: '60%', left: '50%', w: '230px', h: '348px', tipo: 'inferior'},
+          { top: '60%', left: '73%', w: '236px', h: '348px', tipo: 'inferior'},
           { top: '11.37%', left: '3.5%', w: '236px', h: '275px', tipo: 'superior'},
           { top: '11.37%', left: '27%', w: '233px', h: '275px', tipo: 'superior'},
           { top: '11.37%', left: '50%', w: '230px', h: '275px', tipo: 'superior'},
@@ -458,12 +458,13 @@
       // ¡NUEVO (Paso 5)! Definición de fondos
       const fondosCocina = {
         pequena: [
-          { nombre: 'Fondo Clásico (Pequeño)', img: 'static/img/cocina-pequena-fondo.jpg' },
-          { nombre: 'Fondo Mármol (Pequeño)', img: 'static/img/cocina-pequena-fondo-marmol.jpg' },
-          { nombre: 'Fondo Madera (Pequeño)', img: 'static/img/cocina-pequena-fondo-madera.jpg' }
+          { nombre: 'Fondo Clásico (Pequeño)', img: 'static/img/fondos/pequeño/cocina-pequena-fondo.png' },
+          { nombre: 'Fondo Verde Salvaje (Pequeño)', img: 'static/img/fondos/pequeño/Fondo Verde - 8(4x4).png' },
+          { nombre: 'Fondo Marmol (Pequeño)', img: 'static/img/fondos/pequeño/Fondo Marmol - 8(4x4).png' },
+          { nombre: 'Fondo Madera (Pequeño)', img: 'static/img/fondos/pequeño/Fondo Madera- 8(4x4).png' }
         ],
         grande: [
-          { nombre: 'Fondo Clásico (Grande)', img: 'static/img/cocina-grande-fondo.jpg' },
+          { nombre: 'Fondo Clásico (Grande)', img: 'static/img/fondos/grande/cocina-grande-fondo.jpg' },
           { nombre: 'Fondo Mármol (Grande)', img: 'static/img/cocina-grande-fondo-marmol.jpg' }
         ]
       };
