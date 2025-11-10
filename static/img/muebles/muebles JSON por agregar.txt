@@ -1,0 +1,28 @@
+  // {
+  //   "id": "inf_006",
+  //   "nombre": "Columna Extraible",
+  //   "tipo": "inferior",
+  //   "ancho_cm": "30 cm",
+  //   "alto_cm": "180 cm",
+  //   "imagen_grid": "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Front-CF.jpeg",
+  //   "imagen_slot": "static/img/muebles/inf_006/SF/mueble-inf-columna extraible-Front-SF.jpeg",
+  //   "preview_cf": [
+  //     "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Front-CF.jpeg",
+  //     "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Corner-CF.jpeg",
+  //     "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Corner Open-CF.jpeg"
+  //   ]
+  // },
+  // {
+  //   "id": "inf_007",
+  //   "nombre": "Columna (1 Puerta)",
+  //   "tipo": "inferior",
+  //   "ancho_cm": "30 cm",
+  //   "alto_cm": "180 cm",
+  //   "imagen_grid": "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Front-CF.jpeg",
+  //   "imagen_slot": "static/img/muebles/inf_007/SF/mueble-inf-columna 1 puerta-Front-SF.jpeg",
+  //   "preview_cf": [
+  //     "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Front-CF.jpeg",
+  //     "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Corner-CF.jpeg",
+  //     "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Corner Open-CF.jpeg"
+  //   ]
+  // },

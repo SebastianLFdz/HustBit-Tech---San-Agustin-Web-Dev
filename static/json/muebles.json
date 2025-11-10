@@ -20,7 +20,7 @@
     "ancho_cm": "60 cm",
     "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_002/CF/mueble-inf-2p-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/inf_002/SF/mueble-inf-2p-Front-SF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_002/SF/mueble-inf-2p-Front-SF.JPG",
     "preview_cf": [
       "static/img/muebles/inf_002/CF/mueble-inf-2p-Front-CF.jpeg",
       "static/img/muebles/inf_002/CF/mueble-inf-2p-Corner-CF.jpeg",
@@ -34,7 +34,7 @@
     "ancho_cm": "25 cm",
     "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_003/CF/mueble-inf-basurero-Front-CF.png",
-    "imagen_slot": "static/img/muebles/inf_003/SF/mueble-inf-basurero-Front-SF.png",
+    "imagen_slot": "static/img/muebles/inf_003/SF/mueble-inf-basurero-Front-SF.PNG",
     "preview_cf": [
       "static/img/muebles/inf_003/CF/mueble-inf-basurero-Front-CF.png",
       "static/img/muebles/inf_003/CF/mueble-inf-basurero-Corner-CF.png",
@@ -48,7 +48,7 @@
     "ancho_cm": "60 cm",
     "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_004/CF/mueble-inf-estanteria 1 puerta-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/inf_004/SF/mueble-inf-estanteria 1 puerta-Front-SF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_004/SF/mueble-inf-estanteria 1 puerta-Front-SF.JPG",
     "preview_cf": [
       "static/img/muebles/inf_004/CF/mueble-inf-estanteria 1 puerta-Front-CF.jpeg",
       "static/img/muebles/inf_004/CF/mueble-inf-estanteria 1 puerta-Corner-CF.jpeg",
@@ -62,39 +62,11 @@
     "ancho_cm": "60 cm",
     "alto_cm": "90 cm",
     "imagen_grid": "static/img/muebles/inf_005/CF/mueble-inf-estanteria 2 puerta-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/inf_005/SF/mueble-inf-estanteria 2 puerta-Front-SF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_005/SF/mueble-inf-estanteria 2 puerta-Front-SF.JPG",
     "preview_cf": [
       "static/img/muebles/inf_005/CF/mueble-inf-estanteria 2 puerta-Front-CF.jpeg",
       "static/img/muebles/inf_005/CF/mueble-inf-estanteria 2 puerta-Corner-CF.jpeg",
       "static/img/muebles/inf_005/CF/mueble-inf-estanteria 2 puerta-Corner Open-CF.jpeg"
-    ]
-  },
-  {
-    "id": "inf_006",
-    "nombre": "Columna Extraible",
-    "tipo": "inferior",
-    "ancho_cm": "30 cm",
-    "alto_cm": "180 cm",
-    "imagen_grid": "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/inf_006/SF/mueble-inf-columna extraible-Front-SF.jpeg",
-    "preview_cf": [
-      "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Front-CF.jpeg",
-      "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Corner-CF.jpeg",
-      "static/img/muebles/inf_006/CF/mueble-inf-columna extraible-Corner Open-CF.jpeg"
-    ]
-  },
-  {
-    "id": "inf_007",
-    "nombre": "Columna (1 Puerta)",
-    "tipo": "inferior",
-    "ancho_cm": "30 cm",
-    "alto_cm": "180 cm",
-    "imagen_grid": "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/inf_007/SF/mueble-inf-columna 1 puerta-Front-SF.jpeg",
-    "preview_cf": [
-      "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Front-CF.jpeg",
-      "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Corner-CF.jpeg",
-      "static/img/muebles/inf_007/CF/mueble-inf-columna 1 puerta-Corner Open-CF.jpeg"
     ]
   },
   {
@@ -103,10 +75,13 @@
     "tipo": "superior",
     "ancho_cm": "60 cm",
     "alto_cm": "40 cm",
-    "imagen_grid": "static/img/muebles/sup_001/CF/mueble-sup-1p.png",
-    "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-1p.png",
+    "imagen_grid": "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front-CF.jpeg",
+    "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-gaveta 2 puertas-Front-SF.JPG",
     "preview_cf": [
-      "static/img/muebles/sup_001/CF/mueble-sup-1p.png"
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front-CF.jpeg",
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front Open-CF.jpeg",
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Corner-CF.jpeg",
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Corner Open-CF.jpeg"
     ]
   }
 ]
