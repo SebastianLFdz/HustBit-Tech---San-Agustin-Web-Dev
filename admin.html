@@ -203,11 +203,24 @@
     }
 
     /* --- INICIO: ESTILOS DE IMPRESIÓN (Paso 5) --- */
+    /* --- INICIO: ESTILOS DE IMPRESIÓN (Actualizado) --- */
     @media print {
+      
+      /* --- ¡NUEVO! CONTROL DE LA PÁGINA --- */
+      @page {
+        /* Sugiere tamaño Oficio (legal) y orientación horizontal */
+        size: legal landscape; 
+        /* Damos un margen para que no esté pegado a los bordes */
+        margin: 1cm; 
+      }
+
       /* Oculta todo lo que NO queremos imprimir */
       body {
-        background-color: #fff; /* Fondo blanco para imprimir */
-        color: #000;
+        background-color: #fff !important; 
+        color: #000 !important;
+        width: 100%;
+        margin: 0;
+        padding: 0;
       }
       .navbar,
       footer,
@@ -216,39 +229,70 @@
       #simulador-seleccion-fondo,
       .container-admin > hr,
       .container-admin > p,
-      #btn-exportar-pdf {
+      #btn-exportar-pdf,
+      .lead { /* Oculta el "Bienvenido..." */
         display: none !important;
       }
       
-      /* Muestra solo el panel, el simulador y el resumen */
+      /* Ajusta el contenedor principal para impresión */
       .container-admin {
         margin-top: 0;
-        max-width: 100%;
+        max-width: 100%; /* Ocupa todo el ancho de la hoja */
+        width: 100%;
         text-align: left;
+        padding: 0;
       }
+
+      /* Muestra el título H1 centrado */
+      h1 {
+        text-align: center !important;
+        color: #000 !important; /* Asegura color negro */
+        font-size: 22pt;
+      }
+      
       #simulador-area,
       #simulador-resumen {
         display: block !important;
         visibility: visible !important;
+        width: 100%; /* Ocupa todo el ancho */
+        max-width: 100%;
+        /* Evita que la imagen o la tabla se corten entre páginas */
+        page-break-inside: avoid; 
       }
+
       #simulador-area {
         border: 1px solid #ccc;
-        page-break-inside: avoid; /* Evita que la imagen se corte entre páginas */
+        position: relative;
+        height: auto; /* La altura se ajustará a la imagen */
+        margin-bottom: 20px;
       }
+      
       #simulador-fondo {
-        opacity: 1; /* Opacidad completa para el PDF */
+        opacity: 1; 
+        width: 100%;
+        height: auto;
+        position: relative; /* Cambia a relativo para que fluya */
       }
+
       .mueble-slot {
-        /* Borde más sutil para impresión */
         border: 1px solid rgba(0,0,0,0.5) !important;
+        /* Forzar la impresión de fondos (muebles) */
+        -webkit-print-color-adjust: exact; 
+        print-color-adjust: exact;         
       }
-      .table {
+      
+      /* Estilos para la tabla */
+      #simulador-resumen h3 {
         color: #000 !important;
       }
-      .table-dark {
+      .table, .table-dark {
+        color: #000 !important;
         --bs-table-bg: #fff; /* Tablas blancas en PDF */
         --bs-table-striped-bg: #f9f9f9;
         border: 1px solid #ddd;
+      }
+      .table th, .table td {
+        color: #000 !important;
       }
     }
   </style>

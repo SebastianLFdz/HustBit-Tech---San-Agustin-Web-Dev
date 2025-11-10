@@ -71,12 +71,12 @@
   },
   {
     "id": "sup_001",
-    "nombre": "Alacena (2 Puertas)",
+    "nombre": "Gaveta (2 Puertas)",
     "tipo": "superior",
     "ancho_cm": "60 cm",
     "alto_cm": "40 cm",
     "imagen_grid": "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-gaveta 2 puertas-Front-SF.JPG",
+    "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-gaveta 2 puertas-Front-SF.jpeg",
     "preview_cf": [
       "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front-CF.jpeg",
       "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front Open-CF.jpeg",
