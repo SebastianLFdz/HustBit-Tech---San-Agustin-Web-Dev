@@ -209,7 +209,7 @@
       /* --- ¡NUEVO! CONTROL DE LA PÁGINA --- */
       @page {
         /* Sugiere tamaño Oficio (legal) y orientación horizontal */
-        size: legal landscape; 
+        size: legal portrait; 
         /* Damos un margen para que no esté pegado a los bordes */
         margin: 1cm; 
       }
@@ -540,7 +540,7 @@
 
 
       // --- 4. CARGAR DATOS INICIALES (MUEBLES) ---
-      fetch('static/json/muebles.json')
+      fetch('static/muebles.json')
         .then(response => response.json())
         .then(data => {
           baseDeDatosMuebles = data;
@@ -576,9 +576,11 @@
         const muebleNombre = e.currentTarget.dataset.muebleNombre;
         const slotId = slotActivo.dataset.slotId;
         const dataset = e.currentTarget.dataset;
+        console.log("Intentando cargar esta imagen en el slot:", dataset.imgSlot);
         
         // Obtenemos los datos de posición (incluyendo medidas reales)
         const posData = posiciones[tipoCocinaActual][slotId];
+        slotActivo.style.backgroundImage = `url(${dataset.imgSlot})`;
 
         // Guardamos en nuestro desglose
         desgloseDeMuebles[slotId] = {
@@ -594,6 +596,8 @@
 
         // Cerramos el modal
         modalBootstrap.hide();
+        // ¡OPCIONAL! Añade esto para tratar de eliminar el foco
+        e.currentTarget.blur();
         slotActivo = null;
 
         // ¡NUEVO! Actualizamos la tabla

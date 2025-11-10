@@ -74,14 +74,15 @@
     "nombre": "Gaveta (2 Puertas)",
     "tipo": "superior",
     "ancho_cm": "60 cm",
-    "alto_cm": "40 cm",
-    "imagen_grid": "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front-CF.jpeg",
-    "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-gaveta 2 puertas-Front-SF.jpeg",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/muebles/sup_001/mueble-sup-gaveta 2 puertas-Front-CF.png.jpeg",
+    "imagen_slot": "static/img/muebles/sup_001/mueble-sup-gaveta-Front-SF.jpeg",
     "preview_cf": [
-      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front-CF.jpeg",
-      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Front Open-CF.jpeg",
-      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Corner-CF.jpeg",
-      "static/img/muebles/sup_001/CF/mueble-sup-gaveta 2 puertas-Corner Open-CF.jpeg"
+      "static/img/muebles/sup_001/mueble-sup-gaveta 2 puertas-Front Open-CF.png.jpeg",
+      "static/img/muebles/sup_001/mueble-sup-gaveta 2 puertas-Front-CF.png.jpeg",
+      "static/img/muebles/sup_001/mueble-sup-gaveta 2 puertas-Corner-CF.png.jpeg",
+      "static/img/muebles/sup_001/mueble-sup-gaveta 2 puertas-Corner Open-CF.png.jpeg",
+      "static/img/muebles/sup_001/mueble-sup-gaveta 2 puertas-Front-SF.jpeg"
     ]
   }
 ]
