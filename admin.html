@@ -125,6 +125,9 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      /* Forzar la impresión de la imagen de fondo */
+      -webkit-print-color-adjust: exact; /* Para Chrome, Safari, Edge */
+      print-color-adjust: exact;         /* Para Firefox */
     }
     .mueble-slot:hover {
       background-color: rgba(191, 168, 136, 0.4);
@@ -293,14 +296,14 @@
           <a href="#" class="tipo-cocina-btn" id="btn-cocina-pequena">
             <i class="fa-solid fa-kitchen-set"></i>
             <h4>Cocina Pequeña</h4>
-            <p>(5 espacios)</p>
+            <p>(8 espacios)</p>
           </a>
         </div>
         <div class="col-md-4">
           <a href="#" class="tipo-cocina-btn" id="btn-cocina-grande">
             <i class="fa-solid fa-draw-polygon"></i>
             <h4>Cocina Grande (Esquina)</h4>
-            <p>(8 espacios)</p>
+            <p>(12 espacios)</p>
           </a>
         </div>
       </div>
