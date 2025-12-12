@@ -349,7 +349,7 @@
           <a href="#" class="tipo-cocina-btn" id="btn-cocina-l">
             <i class="fa-solid fa-layer-group"></i>
             <h4>Cocina en L</h4>
-            <p>(Sin espacios definidos)</p>
+            <p>(10 espacios)</p>
           </a>
         </div>
 
@@ -502,8 +502,26 @@
           { top: '11.37%', left: '50%', w: '230px', h: '275px', tipo: 'superior'},
           { top: '11.37%', left: '73%', w: '236px', h: '275px', tipo: 'superior'},
         ],
-        // NUEVO: Definimos la cocina en L pero sin espacios (vacío)
-        cocinaL: [], 
+        // NUEVO: Definimos la cocina en L (5 arriba, 5 abajo, alineados a molduras)
+        cocinaL: [
+          // --- SUPERIORES (5 espacios) ---
+          // Pared izquierda (3 espacios)
+          { top: '9%', left: '2%', w: '16%', h: '36%', tipo: 'superior'}, // Extremo izq
+          { top: '13%', left: '22%', w: '12%', h: '33%', tipo: 'superior'}, // Medio izq
+          { top: '15%', left: '37%', w: '20%', h: '31%', tipo: 'superior'}, // Casi esquina izq
+          // Pared derecha (2 espacios)
+          { top: '13%', left: '60%', w: '13%', h: '32%', tipo: 'superior'}, // Casi esquina der
+          { top: '10%', left: '76%', w: '15%', h: '35%', tipo: 'superior'}, // Medio der
+
+          // --- INFERIORES (5 espacios) ---
+          // Pared izquierda (3 espacios)
+          { top: '59%', left: '3%', w: '15%', h: '27%', tipo: 'inferior'}, // Extremo izq
+          { top: '58%', left: '21%', w: '13%', h: '26%', tipo: 'inferior'}, // Medio izq
+          { top: '58%', left: '37%', w: '20%', h: '24%', tipo: 'inferior'}, // Casi esquina izq
+          // Pared derecha (2 espacios)
+          { top: '58%', left: '60%', w: '12%', h: '26%', tipo: 'inferior'}, // Casi esquina der
+          { top: '59%', left: '76%', w: '15%', h: '27%', tipo: 'inferior'}, // Medio der
+        ], 
         grande: [
           { top: '60%', left: '5%',  w: '100px', h: '150px', tipo: 'inferior'},
           { top: '60%', left: '20%', w: '100px', h: '150px', tipo: 'inferior'},
