@@ -1,0 +1,16 @@
+[
+    {
+    "id": "sup_L001",
+    "nombre": "Prueba de mueble para cocina en L usando otro json",
+    "tipo": "superior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/logo.jpg",
+    "imagen_slot": "static/img/logo.jpg",
+    "preview_cf": [
+      "static/img/cocina1.jpg",
+      "static/img/imagencocinaconslogan.jpeg",
+      "static/img/user-icon.png"
+    ]
+  }
+]

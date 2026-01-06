@@ -581,14 +581,29 @@
       const carouselInner = document.getElementById('carousel-preview-inner');
 
 
-      // --- 4. CARGAR DATOS INICIALES (MUEBLES) ---
-      fetch('static/muebles.json')
-        .then(response => response.json())
-        .then(data => {
-          baseDeDatosMuebles = data;
-        })
-        .catch(error => console.error('Error al cargar muebles.json:', error));
 
+// --- 4. CONFIGURACIÓN DE RUTAS JSON (NUEVO) ---
+      const rutasMuebles = {
+        pequena: 'static/muebles.json',       // Ruta original (ahora solo para pequeña)
+        cocinaL: 'static/muebles_l.json',     // Ruta nueva para L
+        grande:  'static/muebles_grande.json' // Ruta nueva para Grande
+      };
+
+      // Función para cargar el JSON correcto según la cocina
+      function cargarMueblesPorTipo(tipo) {
+        const ruta = rutasMuebles[tipo];
+        
+        fetch(ruta)
+          .then(response => {
+            if (!response.ok) throw new Error(`No se encontró: ${ruta}`);
+            return response.json();
+          })
+          .then(data => {
+            baseDeDatosMuebles = data; // Actualiza la base de datos
+            console.log(`Muebles cargados desde: ${ruta}`);
+          })
+          .catch(error => console.error('Error cargando JSON:', error));
+      }
       // --- 5. ASIGNAR EVENTOS ---
       btnPequena.addEventListener('click', (e) => {
         e.preventDefault(); 
@@ -793,10 +808,13 @@
         // Guardamos el tipo de cocina para usarlo después
         tipoCocinaActual = tipo; 
 
+        // ---> AQUÍ AGREGAS ESTA LÍNEA <---
+        cargarMueblesPorTipo(tipo); 
+        // ---------------------------------
+
         // Limpiamos y mostramos los fondos
         fondosGridUI.innerHTML = '';
         const fondos = fondosCocina[tipo];
-        
         // Verificamos si hay fondos definidos para evitar errores
         if(fondos) {
             fondos.forEach(fondo => {

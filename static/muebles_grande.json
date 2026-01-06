@@ -1,0 +1,16 @@
+[
+    {
+    "id": "sup_L001",
+    "nombre": "Prueba de mueble para cocina grande usando otro json",
+    "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/cocina6.jpg",
+    "imagen_slot": "static/img/cocina6.jpg",
+    "preview_cf": [
+      "static/img/cocina1.jpg",
+      "static/img/imagencocinaconslogan.jpeg",
+      "static/img/user-icon.png"
+    ]
+  }
+]
