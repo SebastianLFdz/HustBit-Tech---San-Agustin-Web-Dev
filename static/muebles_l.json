@@ -1,16 +1,87 @@
 [
     {
-    "id": "sup_L001",
-    "nombre": "Prueba de mueble para cocina en L usando otro json",
+    "id": "inf_001",
+    "nombre": "Cajonera (3 Partes)",
+    "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/muebles/inf_001/CF/mueble-inf-3p-Front-CF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_001/SF/mueble-inf-3p-Corner-SF.jpeg",
+    "preview_cf": [
+      "static/img/muebles/inf_001/CF/mueble-inf-3p-Front-CF.jpeg",
+      "static/img/muebles/inf_001/CF/mueble-inf-3p-Corner-CF.jpeg",
+      "static/img/muebles/inf_001/CF/mueble-inf-3p-Corner-Open-CF.jpeg"
+    ]
+  },
+  {
+    "id": "inf_002",
+    "nombre": "Cajonera (2 Partes)",
+    "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/muebles/inf_002/CF/mueble-inf-2p-Front-CF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_002/SF/mueble-inf-2p-Corner-SF.jpeg",
+    "preview_cf": [
+      "static/img/muebles/inf_002/CF/mueble-inf-2p-Front-CF.jpeg",
+      "static/img/muebles/inf_002/CF/mueble-inf-2p-Corner-CF.jpeg",
+      "static/img/muebles/inf_002/CF/mueble-inf-2p-Corner-Open-CF.jpeg"
+    ]
+  },
+    {
+    "id": "inf_003",
+    "nombre": "Basurero extraible",
+    "tipo": "inferior",
+    "ancho_cm": "25 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/muebles/inf_003/CF/mueble-inf-basurero-Front-CF.png",
+    "imagen_slot": "static/img/muebles/inf_003/SF/mueble-inf-basurero-Corner-SF.png",
+    "preview_cf": [
+      "static/img/muebles/inf_003/CF/mueble-inf-basurero-Front-CF.png",
+      "static/img/muebles/inf_003/CF/mueble-inf-basurero-Corner-CF.png",
+      "static/img/muebles/inf_003/CF/mueble-inf-basurero-Corner-Open-CF.png"
+    ]
+  },
+   {
+    "id": "inf_004",
+    "nombre": "Estantería (1 Puerta)",
+    "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/muebles/inf_004/CF/mueble-inf-estanteria-1-puerta-Front-CF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_004/SF/mueble-inf-estanteria-1-puerta-Corner-SF.jpeg",
+    "preview_cf": [
+      "static/img/muebles/inf_004/CF/mueble-inf-estanteria-1-puerta-Front-CF.jpeg",
+      "static/img/muebles/inf_004/CF/mueble-inf-estanteria-1-puerta-Corner-CF.jpeg",
+      "static/img/muebles/inf_004/CF/mueble-inf-estanteria-1-puerta-Corner-Open-CF.jpeg"
+    ]
+  },
+  {
+    "id": "inf_005",
+    "nombre": "Estantería (2 Puertas)",
+    "tipo": "inferior",
+    "ancho_cm": "60 cm",
+    "alto_cm": "90 cm",
+    "imagen_grid": "static/img/muebles/inf_005/CF/mueble-inf-estanteria-2-puerta-Front-CF.jpeg",
+    "imagen_slot": "static/img/muebles/inf_005/SF/mueble-inf-estanteria-2-puerta-Corner-SF.jpeg",
+    "preview_cf": [
+      "static/img/muebles/inf_005/CF/mueble-inf-estanteria-2-puerta-Front-CF.jpeg",
+      "static/img/muebles/inf_005/CF/mueble-inf-estanteria-2-puerta-Corner-CF.jpeg",
+      "static/img/muebles/inf_005/CF/mueble-inf-estanteria-2-puerta-Corner-Open-CF.jpeg"
+    ]
+  },
+   {
+    "id": "sup_001",
+    "nombre": "Gaveta (2 Puertas)",
     "tipo": "superior",
     "ancho_cm": "60 cm",
     "alto_cm": "90 cm",
-    "imagen_grid": "static/img/logo.jpg",
-    "imagen_slot": "static/img/logo.jpg",
+    "imagen_grid": "static/img/muebles/sup_001/CF/mueble-sup-gaveta-2-puertas-Front-CF.jpeg",
+    "imagen_slot": "static/img/muebles/sup_001/SF/mueble-sup-gaveta-Front-SF.jpeg",
     "preview_cf": [
-      "static/img/cocina1.jpg",
-      "static/img/imagencocinaconslogan.jpeg",
-      "static/img/user-icon.png"
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta-2-puertas-Front-Open-CF.jpeg",
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta-2-puertas-Front-CF.jpeg",
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta-2-puertas-Corner-CF.jpeg",
+      "static/img/muebles/sup_001/CF/mueble-sup-gaveta-2-puertas-Corner-Open-CF.jpeg"
     ]
   }
 ]
