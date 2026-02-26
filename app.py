@@ -87,7 +87,7 @@ def contacto():
         # Configuración del correo (lee de variables de entorno)
         SENDER_EMAIL = os.environ.get("EMAIL_USER")
         EMAIL_PASS = os.environ.get("EMAIL_PASS")
-        RECEIVER_EMAIL = os.environ.get("RECEIVER_EMAIL", "angelyoussef621@gmail.com")
+        RECEIVER_EMAIL = os.environ.get("RECEIVER_EMAIL", "sebaslealfdz@gmail.com")
 
         if not SENDER_EMAIL or not EMAIL_PASS:
             # Responder con un mensaje claro (no romper la app)
