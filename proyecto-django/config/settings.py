@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-p*#=54wnrhjr*k-p%x4r$1*22k7neodqnuqv$0a-c=8%mt3+mx"
-
+# Busca la variable 'SECRET_KEY' en Render. 
+# Si no la encuentra (por ejemplo, en tu PC), usa la clave de prueba por defecto.
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-test-key')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# settings.py
+
+ALLOWED_HOSTS = [
+    'https://hustbit-tech-san-agustin-web-dev.onrender.com', # La URL que te dio Render
+    'sanagustincocinas.com',              # Tu dominio de GoDaddy
+    'www.sanagustincocinas.com',          # El dominio con www
+    'localhost',                  # Para que siga funcionando en tu PC
+    '127.0.0.1',                  # Para pruebas locales
+]
 
 
 # Application definition
@@ -117,3 +127,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+# Configuración de Email (Usa los datos de Brevo o SendGrid)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-relay.brevo.com' 
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+DEFAULT_FROM_EMAIL = 'sebaslealfdz@gmail.com'
