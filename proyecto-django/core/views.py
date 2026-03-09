@@ -27,7 +27,7 @@ def contacto(request):
     else:
         form = ContactoForm()
     
-    return render(request, 'templates/contacto.html', {'form': form})
+    return render(request, 'contacto.html', {'form': form})
 
 def about(request):
     return render(request, 'about.html')
