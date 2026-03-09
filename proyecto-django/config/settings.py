@@ -29,18 +29,18 @@ DEBUG = False
 
 # settings.py
 
+# Muy importante para que funcionen los formularios (POST)
 CSRF_TRUSTED_ORIGINS = [
-    'https://tudominio.com',
-    'https://www.tudominio.com',
-    'https://tu-app-django.onrender.com'
+    'https://sanagustincocinas.com',
+    'https://www.sanagustincocinas.com'
 ]
 
 ALLOWED_HOSTS = [
-    'https://hustbit-tech-san-agustin-web-dev.onrender.com', # La URL que te dio Render
-    'sanagustincocinas.com',              # Tu dominio de GoDaddy
-    'www.sanagustincocinas.com',          # El dominio con www
-    'localhost',                  # Para que siga funcionando en tu PC
-    '127.0.0.1',                  # Para pruebas locales
+    'hustbit-tech-san-agustin-web-dev.onrender.com', 
+    'sanagustincocinas.com', 
+    'www.sanagustincocinas.com',
+    'localhost',
+    '127.0.0.1'
 ]
 
 
