@@ -3,6 +3,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .forms import ContactoForm
 
+def home(request):
+    return render(request, 'index.html')
+
 def contacto(request):
     if request.method == 'POST':
         form = ContactoForm(request.POST)
@@ -20,8 +23,21 @@ def contacto(request):
                 ['sebaslealfdz@gmail.com'], # A donde te llegará a ti
                 fail_silently=False,
             )
-            return render(request, 'core/exito.html') # Una página de "Gracias"
+            return render(request, 'contacto.html') # Una página de "Gracias"
     else:
         form = ContactoForm()
     
-    return render(request, 'core/contacto.html', {'form': form})
+    return render(request, 'templates/contacto.html', {'form': form})
+
+def about(request):
+    return render(request, 'about.html')
+
+def referencias(request):
+    return render(request, 'referencias.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def admin(request):
+    return render(request, 'admin.html')
+
