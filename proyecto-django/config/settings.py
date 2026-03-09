@@ -29,6 +29,12 @@ DEBUG = False
 
 # settings.py
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://tudominio.com',
+    'https://www.tudominio.com',
+    'https://tu-app-django.onrender.com'
+]
+
 ALLOWED_HOSTS = [
     'https://hustbit-tech-san-agustin-web-dev.onrender.com', # La URL que te dio Render
     'sanagustincocinas.com',              # Tu dominio de GoDaddy
