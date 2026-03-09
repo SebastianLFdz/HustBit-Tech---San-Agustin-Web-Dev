@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+{% load static %}
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Panel Administrativo | San Agustín Cocinas</title>
-  <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  
   <style>
     :root{
       --gold:#bfa888;
@@ -43,7 +47,6 @@
     .container-admin{
       margin-top:120px;
       text-align:center;
-      /* Aumentamos el max-width para el simulador */
       max-width: 1140px; 
     }
     h1{color:var(--gold);font-weight:700;}
@@ -66,14 +69,9 @@
     }
     .whatsapp-float:hover{transform:translateY(-6px);}
 
-    /* --- INICIO: ESTILOS PARA SIMULADOR (Paso 1) --- */
-    .hidden {
-      display: none;
-    }
-    #simulador-seleccion h3 {
-      color: var(--gold);
-      margin-bottom: 20px;
-    }
+    /* --- SIMULADOR --- */
+    .hidden { display: none; }
+    #simulador-seleccion h3 { color: var(--gold); margin-bottom: 20px; }
     .tipo-cocina-btn {
       background-color: #2a2f3a;
       border: 2px solid #444;
@@ -91,10 +89,7 @@
       color: var(--gold);
       transform: translateY(-5px);
     }
-    .tipo-cocina-btn i {
-      font-size: 40px;
-      margin-bottom: 15px;
-    }
+    .tipo-cocina-btn i { font-size: 40px; margin-bottom: 15px; }
     #simulador-area {
       position: relative;
       width: 100%;
@@ -111,8 +106,8 @@
     }
     .mueble-slot {
       position: absolute;
-      width: 100px; /* Ajustarás esto */
-      height: 150px; /* Ajustarás esto */
+      width: 100px; 
+      height: 150px; 
       background-color: rgba(191, 168, 136, 0.2);
       border: 2px dashed var(--gold);
       cursor: pointer;
@@ -125,17 +120,12 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      /* Forzar la impresión de la imagen de fondo */
-      -webkit-print-color-adjust: exact; /* Para Chrome, Safari, Edge */
-      print-color-adjust: exact;         /* Para Firefox */
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
-    .mueble-slot:hover {
-      background-color: rgba(191, 168, 136, 0.4);
-    }
-    /* --- FIN: ESTILOS PARA SIMULADOR --- */
+    .mueble-slot:hover { background-color: rgba(191, 168, 136, 0.4); }
 
-    
-    /* --- INICIO: NUEVOS ESTILOS PARA MODAL (Paso 2) --- */
+    /* --- MODAL OPCIONES --- */
     .mueble-opcion {
       display: block;
       padding: 15px;
@@ -155,29 +145,16 @@
     }
     .mueble-opcion img {
       width: 100%;
-      height: 120px; /* Altura fija para la vista previa */
-      object-fit: contain; /* Para que la imagen se ajuste sin deformarse */
+      height: 120px;
+      object-fit: contain;
       margin-bottom: 10px;
     }
-    .mueble-opcion h6 {
-      font-size: 14px;
-      color: #ddd;
-    }
-    /* --- FIN: NUEVOS ESTILOS PARA MODAL --- */
+    
+    /* --- PREVIEW --- */
+    #carousel-mueble { border-radius: 8px; overflow: hidden; background-color: #1e232d; }
+    .carousel-item img { width: 100%; height: 400px; object-fit: contain; }
 
-    /* --- INICIO: NUEVOS ESTILOS PARA PREVIEW (Paso 3) --- */
-    #carousel-mueble {
-      border-radius: 8px;
-      overflow: hidden;
-      background-color: #1e232d;
-    }
-    .carousel-item img {
-      width: 100%;
-      height: 400px; /* Altura fija para el carrusel */
-      object-fit: contain;
-    }
-    /* --- FIN: NUEVOS ESTILOS PARA PREVIEW --- */
-    /* --- INICIO: ESTILOS SELECCIÓN DE FONDO (Paso 5) --- */
+    /* --- FONDOS --- */
     .fondo-opcion {
       display: block;
       border: 3px solid #444;
@@ -187,113 +164,22 @@
       color: #fff;
       transition: all 0.3s ease;
     }
-    .fondo-opcion:hover {
-      border-color: var(--gold);
-      transform: translateY(-5px);
-    }
-    .fondo-opcion img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-    .fondo-opcion h6 {
-      background-color: #2a2f3a;
-      padding: 10px;
-      margin: 0;
-    }
+    .fondo-opcion:hover { border-color: var(--gold); transform: translateY(-5px); }
+    .fondo-opcion img { width: 100%; height: 180px; object-fit: cover; }
 
-    /* --- INICIO: ESTILOS DE IMPRESIÓN (Paso 5) --- */
-    /* --- INICIO: ESTILOS DE IMPRESIÓN (Actualizado) --- */
+    /* --- IMPRESIÓN --- */
     @media print {
-      
-      /* --- ¡NUEVO! CONTROL DE LA PÁGINA --- */
-      @page {
-        /* Sugiere tamaño Oficio (legal) y orientación horizontal */
-        size: legal portrait; 
-        /* Damos un margen para que no esté pegado a los bordes */
-        margin: 1cm; 
-      }
-
-      /* Oculta todo lo que NO queremos imprimir */
-      body {
-        background-color: #fff !important; 
-        color: #000 !important;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      .navbar,
-      footer,
-      .whatsapp-float,
-      #simulador-seleccion,
-      #simulador-seleccion-fondo,
-      .container-admin > hr,
-      .container-admin > p,
-      #btn-exportar-pdf,
-      .lead { /* Oculta el "Bienvenido..." */
-        display: none !important;
-      }
-      
-      /* Ajusta el contenedor principal para impresión */
-      .container-admin {
-        margin-top: 0;
-        max-width: 100%; /* Ocupa todo el ancho de la hoja */
-        width: 100%;
-        text-align: left;
-        padding: 0;
-      }
-
-      /* Muestra el título H1 centrado */
-      h1 {
-        text-align: center !important;
-        color: #000 !important; /* Asegura color negro */
-        font-size: 22pt;
-      }
-      
-      #simulador-area,
-      #simulador-resumen {
-        display: block !important;
-        visibility: visible !important;
-        width: 100%; /* Ocupa todo el ancho */
-        max-width: 100%;
-        /* Evita que la imagen o la tabla se corten entre páginas */
-        page-break-inside: avoid; 
-      }
-
-      #simulador-area {
-        border: 1px solid #ccc;
-        position: relative;
-        height: auto; /* La altura se ajustará a la imagen */
-        margin-bottom: 20px;
-      }
-      
-      #simulador-fondo {
-        opacity: 1; 
-        width: 100%;
-        height: auto;
-        position: relative; /* Cambia a relativo para que fluya */
-      }
-
-      .mueble-slot {
-        border: 1px solid rgba(0,0,0,0.5) !important;
-        /* Forzar la impresión de fondos (muebles) */
-        -webkit-print-color-adjust: exact; 
-        print-color-adjust: exact;         
-      }
-      
-      /* Estilos para la tabla */
-      #simulador-resumen h3 {
-        color: #000 !important;
-      }
-      .table, .table-dark {
-        color: #000 !important;
-        --bs-table-bg: #fff; /* Tablas blancas en PDF */
-        --bs-table-striped-bg: #f9f9f9;
-        border: 1px solid #ddd;
-      }
-      .table th, .table td {
-        color: #000 !important;
-      }
+      @page { size: legal portrait; margin: 1cm; }
+      body { background-color: #fff !important; color: #000 !important; width: 100%; margin: 0; padding: 0; }
+      .navbar, footer, .whatsapp-float, #simulador-seleccion, #simulador-seleccion-fondo, 
+      .container-admin > hr, .container-admin > p, #btn-exportar-pdf, .lead { display: none !important; }
+      .container-admin { margin-top: 0; max-width: 100%; width: 100%; text-align: left; padding: 0; }
+      h1 { text-align: center !important; color: #000 !important; font-size: 22pt; }
+      #simulador-area, #simulador-resumen { display: block !important; visibility: visible !important; width: 100%; page-break-inside: avoid; }
+      #simulador-area { border: 1px solid #ccc; position: relative; margin-bottom: 20px; }
+      #simulador-fondo { opacity: 1; width: 100%; height: auto; position: relative; }
+      .mueble-slot { border: 1px solid rgba(0,0,0,0.5) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .table, .table-dark { color: #000 !important; --bs-table-bg: #fff; border: 1px solid #ddd; }
     }
   </style>
 </head>

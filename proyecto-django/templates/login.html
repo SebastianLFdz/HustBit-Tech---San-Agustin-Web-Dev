@@ -1,12 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Acceso | San Agustín Cocinas</title>
-  <link rel="stylesheet" href="Bootstrap/css/bootstrap.min.css" />
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  
   <style>
     :root{
       --bg-gradient: linear-gradient(180deg, #2b2f38 0%, #1e232d 100%);
@@ -100,10 +104,9 @@
 </head>
 <body>
 
-  <!-- NAV -->
   <nav id="siteNav" class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">San Agustín Cocinas</a>
+      <a class="navbar-brand" href="{% url 'home' %}">San Agustín Cocinas</a>
       <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -119,14 +122,13 @@
     </div>
   </nav>
 
-  <!-- LOGIN -->
   <section class="auth-container container">
     <div class="auth-card">
       <i class="fa-solid fa-user-lock fa-3x mb-3 text-light"></i>
       <h4>Acceso Personal Autorizado</h4>
 
-      <!-- Envío al servidor Flask -->
-      <form method="POST" action="/login">
+      <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
         <div class="mb-3 text-start">
           <label class="form-label">Usuario</label>
           <input type="text" name="usuario" class="form-control" placeholder="admin" required>
@@ -139,12 +141,13 @@
       </form>
 
       {% if error %}
-        <div class="text-danger mt-3">{{ error }}</div>
+        <div class="alert alert-danger mt-3" style="background: rgba(220, 53, 69, 0.2); border: none; color: #ff8585;">
+          {{ error }}
+        </div>
       {% endif %}
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="container text-center">
       <div style="margin-bottom:12px;">
@@ -153,15 +156,14 @@
       </div>
       <div class="footer-bottom">
         Tel: 81 8138 2881 · Correo: <a href="mailto:sanagustinstone@hotmail.com" style="color:inherit;">sanagustinstone@hotmail.com</a><br>
-        © 2025 San Agustín Cocinas · Todos los derechos reservados. <br> Sitio web Creado por Sebastián Leal y Asociados.
+        © 2026 San Agustín Cocinas · Todos los derechos reservados. <br> Sitio web Creado por Sebastián Leal y Asociados.
       </div>
     </div>
   </footer>
 
-  <!-- WHATSAPP -->
   <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-  <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     const nav=document.getElementById('siteNav');
     window.addEventListener('scroll',()=>{if(window.scrollY>50)nav.classList.add('scrolled');else nav.classList.remove('scrolled');});

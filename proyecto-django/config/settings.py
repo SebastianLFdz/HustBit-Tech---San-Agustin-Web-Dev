@@ -32,7 +32,8 @@ DEBUG = False
 # Muy importante para que funcionen los formularios (POST)
 CSRF_TRUSTED_ORIGINS = [
     'https://sanagustincocinas.com',
-    'https://www.sanagustincocinas.com'
+    'https://www.sanagustincocinas.com',
+    'https://hustbit-tech-san-agustin-web-dev.onrender.com' # <--- Añade esta
 ]
 
 ALLOWED_HOSTS = [
@@ -139,6 +140,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Opcional pero recomendado para Render (WhiteNoise):
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files (Archivos subidos por usuarios)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Configuración de Email (Usa los datos de Brevo o SendGrid)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
