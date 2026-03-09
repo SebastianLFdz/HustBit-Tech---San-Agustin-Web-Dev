@@ -132,7 +132,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+# ESTA ES LA LÍNEA QUE FALTA:
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Opcional pero recomendado para Render (WhiteNoise):
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Configuración de Email (Usa los datos de Brevo o SendGrid)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
