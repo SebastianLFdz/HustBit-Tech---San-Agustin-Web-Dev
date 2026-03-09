@@ -156,11 +156,11 @@
       </button>
       <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="about.html">Sobre Nosotros</a></li>
-          <li class="nav-item"><a class="nav-link" href="referencias.html">Opiniones</a></li>
-          <li class="nav-item"><a class="nav-link active" href="contacto.html">Contacto</a></li>
-          <li class="nav-item"><a class="nav-login" href="login.html">Iniciar Sesión</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'referencias' %}">Opiniones</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{% url 'contacto' %}">Contacto</a></li>
+          <li class="nav-item"><a class="nav-login" href="{% url 'login' %}">Iniciar Sesión</a></li>
         </ul>
       </div>
     </div>
