@@ -1,6 +1,0 @@
-services:
-  - type: web
-    name: django-godaddy-app
-    runtime: python
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
-    startCommand: "gunicorn config.wsgi:application"
