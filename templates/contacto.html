@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contacto | San Agustín Cocinas</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='Bootstrap/css/bootstrap.min.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <nav id="siteNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">San Agustín Cocinas</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('referencias') }}">Referencias</a></li>
+          <li class="nav-item"><a class="nav-link active" href="{{ url_for('contacto') }}">Contacto</a></li>
+          <li class="nav-item"><a class="nav-login" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:140px;">
+    <div class="container-narrow">
+      <h2 class="section-title">Contáctanos</h2>
+      <p class="section-lead">Queremos conocer tu proyecto y ayudarte a crear el espacio perfecto. Completa el siguiente formulario o contáctanos directamente.</p>
+
+      <div class="contact-wrapper">
+        <div class="contact-form">
+          <form action="/contacto" method="POST" enctype="multipart/form-data">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" name="nombre" class="form-control" placeholder="Ej. Ana Rodríguez" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" name="correo" class="form-control" placeholder="tucorreo@ejemplo.com" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Teléfono</label>
+                <input type="tel" name="telefono" class="form-control" placeholder="(000) 000 0000">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Tipo de proyecto</label>
+                <input type="text" name="proyecto" class="form-control" placeholder="Ej. Cocina integral, closet..." required>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Mensaje o detalles del proyecto</label>
+                <textarea name="mensaje" class="form-control" rows="4" placeholder="Cuéntanos más sobre lo que deseas..." required></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Adjuntar plano o imagen (opcional)</label>
+                <input type="file" class="form-control" name="archivo">
+              </div>
+              <div class="col-12 mt-3">
+                <button type="submit" class="btn-submit">Enviar solicitud</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="contact-info">
+          <h5>Visítanos</h5>
+          <p>Calzada San Pedro 223, Monterrey, N.L. 64660</p>
+
+          <h5>Teléfono</h5>
+          <p>81 8138 2881</p>
+
+          <h5>Correo electrónico</h5>
+          <p>sanagustinstone@hotmail.com</p>
+
+          <h5>Horario</h5>
+          <p>
+            Lunes a Viernes: 10:30 a.m. – 6:30 p.m.<br>
+            Sábado: 10:30 a.m. – 4:30 p.m.<br>
+            Domingo: Cerrado
+          </p>
+
+          <img src="{{ url_for('static', filename='img/cocina4.jpg') }}" alt="Showroom San Agustín Cocinas">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container container-narrow text-center">
+      <div style="margin-bottom:12px;">
+        <a class="me-3" href="https://www.facebook.com/sanagustincocinas"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="https://wa.me/528181382881"><i class="fab fa-whatsapp fa-lg"></i></a>
+      </div>
+      <div class="footer-bottom">
+        Tel: +52 81 8138 2881 · Correo: <a href="mailto:sanagustinstone@hotmail.com" style="color:inherit;">sanagustinstone@hotmail.com</a><br>
+        © 2025 San Agustín Cocinas · Diseño y fabricación artesanal. <br> Sitio web Creado por Sebastián Leal y Asociados.
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal fade" id="modalExito" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius:16px;text-align:center;padding:20px;">
+        <div class="modal-body">
+          <i class="fa-solid fa-circle-check" style="font-size:60px;color:#bfa888;"></i>
+          <h5 class="mt-3">Mensaje enviado con éxito</h5>
+          <p>Gracias por contactarnos. En breve nos pondremos en comunicación contigo.</p>
+          <button type="button" class="btn btn-submit mt-2" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+  <script src="{{ url_for('static', filename='Bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

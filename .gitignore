@@ -1,0 +1,6 @@
+# Ocultar variables de entorno y base de datos
+test.env
+.env
+sanagustin.db
+__pycache__/
+*.pyc

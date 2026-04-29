@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Acceso | San Agustín Cocinas</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='Bootstrap/css/bootstrap.min.css') }}" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <nav id="siteNav" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">San Agustín Cocinas</a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('referencias') }}">Referencias</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('contacto') }}">Contacto</a></li>
+          <li class="nav-item"><a class="nav-login active" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="auth-container container">
+    <div class="auth-card">
+      <i class="fa-solid fa-user-lock fa-3x mb-3 text-light"></i>
+      <h4>Acceso Personal Autorizado</h4>
+
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="mb-3 text-start">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" class="form-control" placeholder="admin" required>
+        </div>
+        <div class="mb-3 text-start">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" class="form-control" placeholder="********" required>
+        </div>
+        <button type="submit" class="auth-btn mt-3">Iniciar Sesión</button>
+      </form>
+
+      {% if error %}
+        <div class="text-danger mt-3">{{ error }}</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <footer>
+    <div class="container text-center">
+      <div style="margin-bottom:12px;">
+        <a class="me-3" href="https://www.facebook.com/sanagustincocinas"><i class="fab fa-facebook fa-lg"></i></a>
+        <a href="https://wa.me/528181382881"><i class="fab fa-whatsapp fa-lg"></i></a>
+      </div>
+      <div class="footer-bottom">
+        Tel: 81 8138 2881 · Correo: <a href="mailto:sanagustinstone@hotmail.com" style="color:inherit;">sanagustinstone@hotmail.com</a><br>
+        © 2025 San Agustín Cocinas · Todos los derechos reservados. <br> Sitio web Creado por Sebastián Leal y Asociados.
+      </div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+  <script src="{{ url_for('static', filename='Bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
