@@ -26,7 +26,13 @@
           <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
           <li class="nav-item"><a class="nav-link active" href="{{ url_for('referencias') }}">Referencias</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('contacto') }}">Contacto</a></li>
-          <li class="nav-item"><a class="nav-login" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+          
+          {# LÓGICA DINÁMICA DE USUARIO #}
+          {% if session.get('usuario') %}
+            <li class="nav-item"><a class="nav-login" href="{{ url_for('admin') }}">Panel Admin</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-login" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+          {% endif %}
         </ul>
       </div>
     </div>

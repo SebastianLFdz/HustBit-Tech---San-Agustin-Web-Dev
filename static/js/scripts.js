@@ -76,3 +76,4 @@ if (window.location.search.includes("exito=1")) {
     }
 }
 
+/* ADMIN.HTML */

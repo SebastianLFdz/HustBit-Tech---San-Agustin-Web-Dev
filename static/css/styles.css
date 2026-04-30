@@ -438,3 +438,160 @@ a{text-decoration:none;}
   transform:translateY(-3px);
   box-shadow:0 8px 24px rgba(191,168,136,0.3);
 }
+
+/* ADMIN.HTML */
+/* Navbar del admin siempre visible */
+.navbar-admin {
+  background: rgba(30,30,35,.8) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.dropdown-menu {
+  background-color: #2e2e2e;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  min-width: 160px;
+}
+.dropdown-item {
+  color: #ddd;
+  font-weight: 500;
+}
+.dropdown-item:hover {
+  background-color: rgba(191,168,136,0.2);
+  color: var(--gold);
+}
+.container-admin {
+  margin-top: 120px;
+  text-align: center;
+  max-width: 1140px;
+}
+.container-admin h1 { color: var(--gold); font-weight: 700; }
+.container-admin hr { margin: 30px auto; width: 60%; opacity: .15; }
+
+/* Simulador - Botones de selección */
+.hidden { display: none; }
+#simulador-seleccion h3 { color: var(--gold); margin-bottom: 20px; }
+.tipo-cocina-btn {
+  background-color: #2a2f3a;
+  border: 2px solid #444;
+  border-radius: 10px;
+  padding: 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: block;
+  height: 100%;
+}
+.tipo-cocina-btn:hover {
+  background-color: #3a3f4a;
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-5px);
+}
+.tipo-cocina-btn i { font-size: 40px; margin-bottom: 15px; }
+
+/* Simulador - Área de arrastrar */
+#simulador-area {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 20px auto;
+  border: 1px solid #555;
+  background-color: #111;
+}
+#simulador-fondo {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.5;
+}
+.mueble-slot {
+  position: absolute;
+  background-color: rgba(191,168,136,0.2);
+  border: 2px dashed var(--gold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 24px;
+  transition: all 0.2s ease;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.mueble-slot:hover { background-color: rgba(191,168,136,0.4); }
+
+/* Simulador - Modal de muebles */
+.mueble-opcion {
+  display: block;
+  padding: 15px;
+  background-color: #1e232d;
+  border: 1px solid #444;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.2s ease;
+  height: 100%;
+  text-align: center;
+}
+.mueble-opcion:hover {
+  border-color: var(--gold);
+  background-color: #2a2f3a;
+  transform: translateY(-3px);
+}
+.mueble-opcion img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+.mueble-opcion h6 { font-size: 14px; color: #ddd; }
+
+/* Simulador - Selección de fondo */
+.fondo-opcion {
+  display: block;
+  border: 3px solid #444;
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+.fondo-opcion:hover {
+  border-color: var(--gold);
+  transform: translateY(-5px);
+}
+.fondo-opcion img { width: 100%; height: 180px; object-fit: cover; }
+.fondo-opcion h6 { background-color: #2a2f3a; padding: 10px; margin: 0; }
+
+/* Estilos de impresión / exportar PDF */
+@media print {
+  @page { size: legal portrait; margin: 1cm; }
+  body { background-color: #fff !important; color: #000 !important; width: 100%; margin: 0; padding: 0; }
+  .navbar, footer, .whatsapp-float, #simulador-seleccion,
+  #simulador-seleccion-fondo, .container-admin > hr,
+  .container-admin > p, #btn-exportar-pdf, .lead { display: none !important; }
+  .container-admin {
+    margin-top: 0; max-width: 100%; width: 100%; text-align: left; padding: 0;
+  }
+  h1 { text-align: center !important; color: #000 !important; font-size: 22pt; }
+  #simulador-area, #simulador-resumen {
+    display: block !important;
+    visibility: visible !important;
+    width: 100%; max-width: 100%;
+    page-break-inside: avoid;
+  }
+  #simulador-area { border: 1px solid #ccc; position: relative; height: auto; margin-bottom: 20px; }
+  #simulador-fondo { opacity: 1; width: 100%; height: auto; position: relative; }
+  .mueble-slot {
+    border: 1px solid rgba(0,0,0,0.5) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  #simulador-resumen h3 { color: #000 !important; }
+  .table, .table-dark { color: #000 !important; --bs-table-bg: #fff; --bs-table-striped-bg: #f9f9f9; border: 1px solid #ddd; }
+  .table th, .table td { color: #000 !important; }
+}
