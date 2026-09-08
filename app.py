@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template_string, request, redirect, url_for, session, g, send_from_directory
+from flask import Flask, render_template, render_template_string, request, redirect, url_for, session, g, send_from_directory
 import sqlite3
 import os
 import smtplib
@@ -7,12 +7,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
-# Cargar variables del .env (test.env)
-load_dotenv("test.env")
+# Cargar variables locales; en Vercel se usan las variables configuradas en el proyecto.
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+load_dotenv(os.path.join(BASE_DIR, "test.env"))
 
 app = Flask(__name__)
-app.secret_key = "clave_segura_2025"
-DATABASE = "sanagustin.db"
+app.secret_key = os.environ.get("SECRET_KEY", "clave-segura-local")
+DATABASE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "sanagustin.db"))
 
 
 # ---- Conexión a base de datos ----
@@ -32,29 +33,7 @@ def close_connection(exception):
 
 # ---- Función para mostrar el usuario en la barra ----
 def render_with_user(filename, **kwargs):
-    """
-    Lee el HTML plano y reemplaza el botón de login si hay sesión activa,
-    luego procesa el HTML con Jinja (render_template_string).
-    """
-    # Leer archivo HTML crudo
-    with open(filename, encoding="utf-8") as f:
-        html = f.read()
-
-    # Si hay sesión, reemplazar el botón de login por el usuario (imagen + nombre)
-    if "usuario" in session:
-        reemplazo = (
-            '<li class="nav-item d-flex align-items-center">'
-            '<img src="static/img/user-icon.png" alt="Usuario" style="width:28px;height:28px;border-radius:50%;margin-right:8px;">'
-            f'<a class="nav-link" href="/admin">{session["usuario"]}</a>'
-            '</li>'
-        )
-        html = html.replace(
-            '<li class="nav-item"><a class="nav-login',
-            reemplazo + '\n<li style="display:none" class="nav-item"><a class="nav-login'
-        )
-
-    # Renderizar el HTML (puede contener tags Jinja)
-    return render_template_string(html, **kwargs)
+    return render_template(filename, **kwargs)
 
 
 # ---- Rutas HTML ----
@@ -64,8 +43,15 @@ def index():
 
 
 @app.route("/about")
+@app.route("/about.html")
 def about():
     return render_with_user("about.html")
+
+
+@app.route("/proyectos")
+@app.route("/proyectos.html")
+def proyectos():
+    return render_with_user("proyectos.html")
 
 
 @app.route("/referencias", methods=["GET", "POST"])
@@ -137,6 +123,7 @@ def referencias():
 
 # contacto GET: sirve contacto.html; POST: procesa y envía correo
 @app.route("/contacto", methods=["GET", "POST"])
+@app.route("/contacto.html", methods=["GET", "POST"])
 def contacto():
     if request.method == "POST":
         # Tomar campos del formulario
@@ -252,6 +239,7 @@ def admin():
 
 # ---- LOGIN ----
 @app.route("/login", methods=["GET", "POST"])
+@app.route("/login.html", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         usuario = request.form["usuario"]
@@ -292,7 +280,8 @@ def bootstrap_files(path):
 # ---- Fallback para cualquier otra página HTML ----
 @app.route("/<path:filename>")
 def serve_html(filename):
-    if filename.endswith(".html") and os.path.exists(filename):
+    template_path = os.path.join(app.template_folder or "templates", filename)
+    if filename.endswith(".html") and os.path.isfile(template_path):
         return render_with_user(filename)
     return "Página no encontrada", 404
 
