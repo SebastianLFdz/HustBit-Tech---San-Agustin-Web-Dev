@@ -21,8 +21,8 @@ DATABASE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "sanagustin.db
 def get_db():
     db = getattr(g, "_database", None)
     if db is None:
-        # Vercel inyecta automáticamente POSTGRES_URL
-        db = g._database = psycopg2.connect(os.environ.get("POSTGRES_URL"))
+        # Cambiado a DATABASE_URL según lo que configuraste en Vercel
+        db = g._database = psycopg2.connect(os.environ.get("DATABASE_URL"))
     return db
 
 @app.teardown_appcontext
@@ -59,20 +59,9 @@ def proyectos():
 @app.route("/referencias.html", methods=["GET", "POST"])
 def referencias():
     db = get_db()
+    cursor = db.cursor() # Abrimos el cursor de Postgres
     
-    # 1. Asegurar que la tabla existe
-    db.execute('''
-        CREATE TABLE IF NOT EXISTS reviews (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT NOT NULL,
-            comentario TEXT NOT NULL,
-            calificacion REAL NOT NULL,
-            fecha DATETIME DEFAULT CURRENT_TIMESTAMP
-        )
-    ''')
-    db.commit()
-
-    # 2. Si el usuario envía una nueva reseña
+    # Si el usuario envía una nueva reseña
     if request.method == "POST":
         nombre = request.form.get("nombre", "Anónimo").strip()
         comentario = request.form.get("comentario", "").strip()
@@ -81,39 +70,39 @@ def referencias():
         except ValueError:
             calificacion = 5.0
             
-        db = get_db()
-        cursor = db.cursor()
         cursor.execute(
-            "INSERT INTO reviews (nombre, comentario, calificacion) VALUES (%s, %s, %s)", (nombre, comentario, calificacion))
-        db.commit() # Importante: guarda los cambios
-        cursor.close()
+            "INSERT INTO reviews (nombre, comentario, calificacion) VALUES (%s, %s, %s)", 
+            (nombre, comentario, calificacion)
+        )
+        db.commit() # Guarda los cambios
 
-    # 3. Preparar los datos para mostrar
+    # Preparar los datos para mostrar
     filtro = request.args.get("stars")
     
     if filtro:
-        # Si se hace clic en una barra, filtramos por la estrella (ej. 4 trae de 4.0 a 4.9)
-        cursor = db.execute("SELECT nombre, comentario, calificacion, date(fecha) FROM reviews WHERE CAST(calificacion AS INTEGER) = ? ORDER BY fecha DESC", (int(filtro),))
+        # Cambiamos ? por %s
+        cursor.execute("SELECT nombre, comentario, calificacion, date(fecha) FROM reviews WHERE CAST(calificacion AS INTEGER) = %s ORDER BY fecha DESC", (int(filtro),))
     else:
-        cursor = db.execute("SELECT nombre, comentario, calificacion, date(fecha) FROM reviews ORDER BY fecha DESC")
+        cursor.execute("SELECT nombre, comentario, calificacion, date(fecha) FROM reviews ORDER BY fecha DESC")
         
     reviews = cursor.fetchall()
     
     # Obtener todas las calificaciones para la estadística tipo Amazon
-    cursor = db.execute("SELECT calificacion FROM reviews")
+    cursor.execute("SELECT calificacion FROM reviews")
     all_ratings = [row[0] for row in cursor.fetchall()]
-    total_reviews = len(all_ratings)
     
+    cursor.close() # Cerramos el cursor al terminar las consultas
+    
+    total_reviews = len(all_ratings)
     promedio = sum(all_ratings) / total_reviews if total_reviews > 0 else 0.0
     
-    # Contar cuántas reseñas hay por cada nivel de estrella para las barras de progreso
+    # Contar cuántas reseñas hay por cada nivel de estrella
     estrellas_count = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
     for r in all_ratings:
-        nivel = int(r) # Convierte 4.5 a 4
+        nivel = int(r)
         if nivel in estrellas_count:
             estrellas_count[nivel] += 1
             
-    # Calcular el porcentaje para el CSS de cada barra
     estrellas_pct = {k: (v / total_reviews * 100 if total_reviews > 0 else 0) for k, v in estrellas_count.items()}
 
     return render_with_user("referencias.html", 
@@ -122,7 +111,6 @@ def referencias():
                             promedio=round(promedio, 1), 
                             pct=estrellas_pct,
                             filtro=filtro)
-
 
 # contacto GET: sirve contacto.html; POST: procesa y envía correo
 @app.route("/contacto", methods=["GET", "POST"])
@@ -249,8 +237,11 @@ def login():
         password = request.form["password"]
 
         db = get_db()
-        cursor = db.execute("SELECT * FROM usuarios WHERE usuario = ? AND password = ?", (usuario, password))
+        cursor = db.cursor()
+        # Cambiamos los ? por %s
+        cursor.execute("SELECT * FROM usuarios WHERE usuario = %s AND password = %s", (usuario, password))
         user = cursor.fetchone()
+        cursor.close()
 
         if user:
             session["usuario"] = user[1]
