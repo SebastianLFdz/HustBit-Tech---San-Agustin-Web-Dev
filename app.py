@@ -1,7 +1,8 @@
 # app.py
-from flask import Flask, render_template, render_template_string, request, redirect, url_for, session, g, send_from_directory
+from flask import g, Flask, render_template, render_template_string, request, redirect, url_for, session, g, send_from_directory
 import sqlite3
 import os
+import psycopg2
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -20,9 +21,9 @@ DATABASE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "sanagustin.db
 def get_db():
     db = getattr(g, "_database", None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+        # Vercel inyecta automáticamente POSTGRES_URL
+        db = g._database = psycopg2.connect(os.environ.get("POSTGRES_URL"))
     return db
-
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -80,10 +81,12 @@ def referencias():
         except ValueError:
             calificacion = 5.0
             
-        db.execute("INSERT INTO reviews (nombre, comentario, calificacion) VALUES (?, ?, ?)", 
-                   (nombre, comentario, calificacion))
-        db.commit()
-        return redirect(url_for("referencias"))
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute(
+            "INSERT INTO reviews (nombre, comentario, calificacion) VALUES (%s, %s, %s)", (nombre, comentario, calificacion))
+        db.commit() # Importante: guarda los cambios
+        cursor.close()
 
     # 3. Preparar los datos para mostrar
     filtro = request.args.get("stars")
