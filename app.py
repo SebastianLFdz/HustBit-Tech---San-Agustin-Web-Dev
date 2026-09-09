@@ -174,7 +174,7 @@ def contacto():
 
         # Configurar parámetros del correo
         email_params = {
-            "from": "San Agustín Cocinas <sebaslealfdz@gmail.com>",
+            "from": "San Agustín Cocinas <contacto@sanagustincocinas.com>",
             "to": [RECEIVER_EMAIL],
             "subject": subject,
             "html": html_content,
