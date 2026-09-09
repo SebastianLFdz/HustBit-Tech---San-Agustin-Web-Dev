@@ -119,82 +119,38 @@
           <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>  
           <li class="nav-item"><a class="nav-link" href="referencias.html">Referencias</a></li>
           <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-user-circle me-1 text-warning"></i>
+              {{ session['usuario'] }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="/admin">Mi cuenta</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- SOBRE NOSOTROS -->
-  <section class="section" style="padding-top:120px;">
-    <div class="container-narrow">
-      <h2 class="section-title">Sobre Nosotros</h2>
-      <p class="section-lead">En <strong>San Agustín Cocinas</strong> nos especializamos en diseñar y fabricar cocinas personalizadas en Monterrey, ofreciendo soluciones que combinan estilo, elegancia y funcionalidad. Cada cocina es desarrollada con atención al detalle, utilizando materiales de calidad y un enfoque artesanal que garantiza durabilidad y diseño único.</p>
-
-      <div class="row g-5 align-items-center reveal">
-        <div class="col-md-6">
-          <img src="static/img/cocina2.jpg" alt="San Agustín Cocinas">
+  <div class="proyectos-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px;">
+    {% for p in proyectos %}
+        <div class="card-proyecto" style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #fff;">
+            <img src="{{ p.imagen_url }}" alt="{{ p.titulo }}" style="width: 100%; height: 220px; object-fit: cover;">
+            <div style="padding: 15px;">
+                <span style="font-size: 0.85rem; color: #888;">{{ p.fecha }}</span>
+                <h3 style="margin: 8px 0; color: #333;">{{ p.titulo }}</h3>
+                {% if p.descripcion %}
+                    <p style="color: #666; font-size: 0.95rem;">{{ p.descripcion }}</p>
+                {% endif %}
+            </div>
         </div>
-        <div class="col-md-6">
-          <div class="card-dark">
-            <h4 class="fw-bold mb-3" style="color:var(--gold);">Nuestra Misión</h4>
-            <p>Fabricar cocinas personalizadas de alta calidad que combinen diseño, funcionalidad y atención al detalle, brindando soluciones estéticas y duraderas que superen las expectativas de nuestros clientes.</p>
-            <h4 class="fw-bold mt-4 mb-3" style="color:var(--gold);">Nuestra Visión</h4>
-            <p>Ser reconocidos como líderes en diseño y fabricación de cocinas a medida en Monterrey, distinguiéndonos por la innovación, la elegancia y la satisfacción total del cliente.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICIOS -->
-  <section class="section reveal">
-    <div class="container-narrow">
-      <h2 class="section-title">Lo que ofrecemos</h2>
-      <p class="section-lead">Nos enfocamos en brindar soluciones completas para el diseño y fabricación de cocinas con un toque distintivo y elegante.</p>
-
-      <div class="service-grid">
-        <div class="service-item">
-          <i class="fa-solid fa-pencil-ruler"></i>
-          <h5>Diseño Personalizado</h5>
-          <p>Adaptamos cada propuesta al espacio y preferencias de nuestros clientes, buscando la armonía entre estética y funcionalidad.</p>
-        </div>
-        <div class="service-item">
-          <i class="fa-solid fa-hammer"></i>
-          <h5>Fabricación a Medida</h5>
-          <p>Realizamos cada cocina con precisión artesanal, empleando materiales duraderos y de alta calidad.</p>
-        </div>
-        <div class="service-item">
-          <i class="fa-solid fa-screwdriver-wrench"></i>
-          <h5>Instalación Profesional</h5>
-          <p>Garantizamos un proceso de instalación eficiente y seguro, cuidando cada detalle del acabado final.</p>
-        </div>
-        <div class="service-item">
-          <i class="fa-solid fa-user-tie"></i>
-          <h5>Asesoría Especializada</h5>
-          <p>Ofrecemos acompañamiento personalizado para elegir el diseño, los materiales y acabados ideales para tu hogar.</p>
-        </div>
-        <div class="service-item">
-          <i class="fa-solid fa-palette"></i>
-          <h5>Diseños Modernos y Clásicos</h5>
-          <p>Trabajamos con estilos contemporáneos, clásicos o minimalistas, adaptándonos a la visión de cada cliente.</p>
-        </div>
-        <div class="service-item">
-          <i class="fa-solid fa-cubes"></i>
-          <h5>Materiales de Alta Calidad</h5>
-          <p>Utilizamos herrajes, maderas y recubrimientos de marcas reconocidas para asegurar la durabilidad y estética.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- COMPROMISO -->
-  <section class="section reveal">
-    <div class="container-narrow">
-      <h2 class="section-title">Nuestro Compromiso</h2>
-      <p class="section-lead">Más que fabricar cocinas, creamos espacios donde cada detalle importa. Nos comprometemos con la calidad, la transparencia y la satisfacción total de nuestros clientes, ofreciendo resultados que reflejan dedicación y profesionalismo.</p>
-      <img src="static/img/cocina6.jpg" alt="Cocina moderna San Agustín" class="reveal">
-    </div>
-  </section>
+    {% else %}
+        <p style="text-align: center; grid-column: 1/-1; color: #777;">No hay proyectos publicados por el momento.</p>
+    {% endfor %}
+  </div>
 
   <!-- FOOTER -->
   <footer>

@@ -3,6 +3,7 @@ from flask import g, Flask, render_template, render_template_string, request, re
 import sqlite3
 import os
 import psycopg2
+import base64
 import smtplib
 import resend
 from email.mime.multipart import MIMEMultipart
@@ -48,12 +49,6 @@ def index():
 @app.route("/about.html")
 def about():
     return render_with_user("about.html")
-
-
-@app.route("/proyectos")
-@app.route("/proyectos.html")
-def proyectos():
-    return render_with_user("proyectos.html")
 
 
 @app.route("/referencias", methods=["GET", "POST"])
@@ -216,7 +211,6 @@ def admin():
         return redirect(url_for("login"))
     return render_with_user("admin.html")
 
-
 # ---- LOGIN ----
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login.html", methods=["GET", "POST"])
@@ -271,4 +265,84 @@ def serve_html(filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+# -------------------------------------------------------------
+# RUTA PÚBLICA: Mostrar todos los proyectos
+# -------------------------------------------------------------
+@app.route("/proyectos")
+@app.route("/proyectos.html")
+def proyectos():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, titulo, descripcion, date(fecha), imagen_url FROM proyectos ORDER BY fecha DESC, id DESC")
+    proyectos_db = cursor.fetchall()
+    cursor.close()
+
+    lista_proyectos = []
+    for p in proyectos_db:
+        lista_proyectos.append({
+            "id": p[0],
+            "titulo": p[1],
+            "descripcion": p[2],
+            "fecha": str(p[3]),
+            "imagen_url": p[4]
+        })
+
+    return render_with_user("proyectos.html", proyectos=lista_proyectos)
+
+
+# -------------------------------------------------------------
+# RUTAS ADMIN: Gestión de proyectos (Subir y Eliminar)
+# -------------------------------------------------------------
+@app.route("/admin/proyectos/crear", methods=["POST"])
+def admin_crear_proyecto():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    titulo = request.form.get("titulo", "").strip()
+    descripcion = request.form.get("descripcion", "").strip()
+    fecha = request.form.get("fecha")
+    archivo_imagen = request.files.get("imagen")
+
+    if not titulo or not archivo_imagen:
+        return redirect(url_for("admin") + "?error=campos_requeridos")
+
+    # Convertir la imagen subida a Base64
+    file_bytes = archivo_imagen.read()
+    mime_type = archivo_imagen.mimetype or "image/jpeg"
+    base64_encoded = base64.b64encode(file_bytes).decode("utf-8")
+    imagen_url = f"data:{mime_type};base64,{base64_encoded}"
+
+    db = get_db()
+    cursor = db.cursor()
+    if fecha:
+        cursor.execute(
+            "INSERT INTO proyectos (titulo, descripcion, fecha, imagen_url) VALUES (%s, %s, %s, %s)",
+            (titulo, descripcion, fecha, imagen_url)
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO proyectos (titulo, descripcion, imagen_url) VALUES (%s, %s, %s)",
+            (titulo, descripcion, imagen_url)
+        )
+
+    db.commit()
+    cursor.close()
+
+    return redirect(url_for("admin") + "?exito=proyecto_creado")
+
+
+@app.route("/admin/proyectos/eliminar/<int:proyecto_id>", methods=["POST"])
+def admin_eliminar_proyecto(proyecto_id):
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM proyectos WHERE id = %s", (proyecto_id,))
+    db.commit()
+    cursor.close()
+
+    return redirect(url_for("admin") + "?exito=proyecto_eliminado")
 
