@@ -31,20 +31,24 @@
     }
 
     /* NAV */
-    .navbar{
-      background:transparent !important;
-      transition:all .3s ease;
-      padding:.8rem 0;
+    .navbar {
+      background: rgba(30, 30, 35, 0.85) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .navbar.scrolled{
-      background:rgba(30,30,35,.8)!important;
-      backdrop-filter:blur(12px);
-      border-bottom:1px solid rgba(255,255,255,.08);
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
     }
-    .navbar-brand{color:#fff!important;font-weight:700;font-size:1.1rem;}
-    .nav-link{color:#ddd!important;font-weight:500;margin-right:.25rem;}
-    .nav-link:hover{color:var(--gold)!important;}
-    .nav-link.active{color:var(--gold)!important;}
+    .nav-link {
+      color: #ddd !important;
+      font-weight: 500;
+      margin-right: 0.25rem;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--gold) !important;
+    }
     .nav-login{
       background:var(--gold);
       color:#111!important;

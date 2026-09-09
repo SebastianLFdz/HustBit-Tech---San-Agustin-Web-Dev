@@ -17,15 +17,24 @@
       color:#fff;
       overflow-x:hidden;
     }
-    .navbar{
-      background:rgba(30,30,35,.8)!important;
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid rgba(255,255,255,0.08);
+    .navbar {
+      background: rgba(30, 30, 35, 0.85) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .navbar-brand{color:#fff!important;font-weight:700;}
-    .nav-link{color:#ddd!important;font-weight:500;margin-right:.25rem;}
-    .nav-link:hover{color:var(--gold)!important;}
-    .nav-link.active{color:var(--gold)!important;}
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
+    }
+    .nav-link {
+      color: #ddd !important;
+      font-weight: 500;
+      margin-right: 0.25rem;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--gold) !important;
+    }
     .dropdown-menu{
       background-color:#2e2e2e;
       border:1px solid rgba(255,255,255,0.1);
