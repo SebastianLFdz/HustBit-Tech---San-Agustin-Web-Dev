@@ -147,31 +147,36 @@
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="siteNav" class="navbar navbar-expand-lg fixed-top">
+<!-- Navbar Navigation -->
+  <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="index.html">San Agustín Cocinas</a>
+      <a class="navbar-brand" href="/">San Agustín Cocinas</a>
       <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="about.html">Sobre Nosotros</a></li>
-          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>  
-          <li class="nav-item"><a class="nav-link" href="referencias.html">Referencias</a></li>
-          <li class="nav-item"><a class="nav-link" active href="contacto.html">Contacto</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-user-circle me-1 text-warning"></i>
-              {{ session['usuario'] }}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-              <li><a class="dropdown-item" href="/admin">Mi cuenta</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
-            </ul>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/proyectos">Proyectos</a></li>
+          <li class="nav-item"><a class="nav-link" href="/referencias">Referencias</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contacto">Contacto</a></li>
+          
+          {% if session.get('usuario') %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-user-circle me-1 text-warning"></i>
+                {{ session['usuario'] }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="/admin">Mi cuenta</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="/login"><i class="fa-solid fa-user me-1"></i> Iniciar Sesión</a></li>
+          {% endif %}
         </ul>
       </div>
     </div>
