@@ -1,10 +1,8 @@
 # app.py
 from flask import g, Flask, render_template, render_template_string, request, redirect, url_for, session, g, send_from_directory
-import sqlite3
 import os
 import psycopg2
 import base64
-import smtplib
 import resend
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText

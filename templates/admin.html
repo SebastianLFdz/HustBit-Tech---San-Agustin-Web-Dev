@@ -278,12 +278,13 @@
       </button>
       <div id="navCollapse" class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav align-items-center">
-          <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="/about">Sobre Nosotros</a></li>
-          <li class="nav-item"><a class="nav-link" href="/referencias">Referencias</a></li>
-          <li class="nav-item"><a class="nav-link" href="/contacto">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="proyectos.html">Proyectos</a></li>  
+          <li class="nav-item"><a class="nav-link" href="referencias.html">Referencias</a></li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" active href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-user-circle me-1 text-warning"></i>
               {{ session['usuario'] }}
             </a>
