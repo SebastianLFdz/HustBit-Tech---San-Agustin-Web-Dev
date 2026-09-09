@@ -4,6 +4,7 @@ import sqlite3
 import os
 import psycopg2
 import smtplib
+import resend
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
@@ -124,24 +125,20 @@ def contacto():
         proyecto = request.form.get("proyecto", "").strip()
         mensaje = request.form.get("mensaje", "").strip()
 
-        # Configuración del correo (lee de variables de entorno)
-        SENDER_EMAIL = os.environ.get("EMAIL_USER")
-        EMAIL_PASS = os.environ.get("EMAIL_PASS")
+        RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
         RECEIVER_EMAIL = os.environ.get("RECEIVER_EMAIL", "angelyoussef621@gmail.com")
 
-        if not SENDER_EMAIL or not EMAIL_PASS:
-            # Responder con un mensaje claro (no romper la app)
+        if not RESEND_API_KEY:
             return render_template_string("""
                 <div style='text-align:center;margin-top:100px;font-family:Poppins,Arial,sans-serif;'>
                     <h3 style='color:#bfa888;'>⚠️ Error de configuración</h3>
-                    <p>No está configurado el correo emisor. Revisa EMAIL_USER y EMAIL_PASS en test.env.</p>
+                    <p>No está configurada la variable RESEND_API_KEY en Vercel.</p>
                     <a href='/contacto' style='color:#bfa888;'>Volver</a>
                 </div>
             """)
 
         # Asunto y HTML del mensaje
-        subject = "Solicitud de contacto - {}".format(nombre or "Sin nombre")
-        # Construyo el HTML con format() para evitar conflictos de llaves en f-strings
+        subject = f"Solicitud de contacto - {nombre or 'Sin nombre'}"
         html_content = """
         <html>
         <body style="font-family: Poppins, Arial, sans-serif; background:#f6f6f6; padding:20px;">
@@ -172,43 +169,37 @@ def contacto():
             MENSAJE=(mensaje.replace("\n", "<br>") if mensaje else "<em>Sin mensaje</em>")
         )
 
-        # Crear mensaje MIME y adjuntar si corresponde
-        msg = MIMEMultipart()
-        msg["Subject"] = subject
-        msg["From"] = SENDER_EMAIL
-        msg["To"] = RECEIVER_EMAIL
-        msg["Reply-To"] = correo if correo else SENDER_EMAIL
-        msg.attach(MIMEText(html_content, "html"))
+        # Asignar API Key a Resend
+        resend.api_key = RESEND_API_KEY
 
-        # Adjuntar archivo si se envió (request.files)
+        # Configurar parámetros del correo
+        email_params = {
+            "from": "San Agustín Cocinas <onboarding@resend.dev>",
+            "to": [RECEIVER_EMAIL],
+            "subject": subject,
+            "html": html_content,
+        }
+
+        if correo:
+            email_params["reply_to"] = correo
+
+        # Adjuntar archivo si existe
         file = request.files.get("archivo")
         if file and getattr(file, "filename", None):
-            try:
-                from email.mime.base import MIMEBase
-                from email import encoders
-                part = MIMEBase("application", "octet-stream")
-                payload = file.read()
-                part.set_payload(payload)
-                encoders.encode_base64(part)
-                part.add_header("Content-Disposition", 'attachment; filename="{}"'.format(file.filename))
-                msg.attach(part)
-            except Exception as e_attach:
-                # Si falla adjuntar, imprimimos pero seguimos para evitar interrumpir el envío
-                print("Error adjuntando archivo:", e_attach)
+            file_bytes = file.read()
+            if file_bytes:
+                email_params["attachments"] = [{
+                    "filename": file.filename,
+                    "content": list(file_bytes)
+                }]
 
-        # Enviar por SMTP (GMail)
+        # Enviar mediante la API de Resend
         try:
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-                server.login(SENDER_EMAIL, EMAIL_PASS)
-                server.sendmail(SENDER_EMAIL, RECEIVER_EMAIL, msg.as_string())
-
-            # Redirigir a /contacto?exito=1 para que el modal se muestre en el HTML
+            resend.Emails.send(email_params)
             return redirect(url_for("contacto") + "?exito=1")
 
         except Exception as e:
-            # Imprimir para depuración en consola
-            print("Error enviando correo:", type(e).__name__, e)
-            # Responder con mensaje amigable al usuario (no mostrar trace completo)
+            print("Error enviando correo con Resend:", type(e).__name__, e)
             return render_template_string("""
                 <div style='text-align:center;margin-top:100px;font-family:Poppins,Arial,sans-serif;'>
                     <h3 style='color:#bfa888;'>⚠️ Error al enviar el mensaje</h3>
@@ -217,9 +208,7 @@ def contacto():
                 </div>
             """)
 
-    # GET: servir página
     return render_with_user("contacto.html")
-
 
 @app.route("/admin")
 def admin():
