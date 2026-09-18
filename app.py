@@ -209,30 +209,34 @@ def admin():
         return redirect(url_for("login"))
     return render_with_user("admin.html")
 
-# ---- LOGIN ----
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login.html", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        usuario = request.form["usuario"]
-        password = request.form["password"]
+        usuario_input = request.form["usuario"]
+        password_input = request.form["password"]
 
-        db = get_db()
-        cursor = db.cursor()
-        # Cambiamos los ? por %s
-        cursor.execute("SELECT * FROM usuarios WHERE usuario = %s AND password = %s", (usuario, password))
-        user = cursor.fetchone()
-        cursor.close()
+        try:
+            db = get_db()
+            cursor = db.cursor()
+            
+            # 1. Pedimos las columnas explícitamente para evitar problemas de orden
+            cursor.execute("SELECT id, usuario, password FROM usuarios WHERE usuario = %s", (usuario_input,))
+            user = cursor.fetchone()
+            cursor.close()
 
-        if user:
-            session["usuario"] = user[1]
-            session["username"] = user[2]
-            return redirect(url_for("admin"))
-        else:
-            return render_with_user("login.html", error="Credenciales incorrectas")
+            # 2. Verificamos si el usuario existe y si la contraseña coincide
+            if user and user[2] == password_input:
+                session["usuario"] = user[1] # Guardamos solo el nombre de usuario
+                return redirect(url_for("admin"))
+            else:
+                return render_with_user("login.html", error="Credenciales incorrectas")
+                
+        except Exception as e:
+            # Si hay un error de conexión con Neon, lo mostraremos en pantalla
+            return render_with_user("login.html", error=f"Error de base de datos: {str(e)}")
 
     return render_with_user("login.html")
-
 
 # ---- LOGOUT ----
 @app.route("/logout")
