@@ -1,11 +1,23 @@
 # app.py
-from flask import g, Flask, render_template, render_template_string, request, redirect, url_for, session, g, send_from_directory
-import os
-import psycopg2
 import base64
+from werkzeug.utils import secure_filename
+import os
+import psycopg
+from psycopg.rows import dict_row
+from flask import (
+    Flask,
+    g,
+    redirect,
+    render_template,
+    render_template_string,
+    request,
+    send_from_directory,
+    session,
+    url_for,
+)
+import psycopg
+from psycopg import Connection
 import resend
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from dotenv import load_dotenv
 
 # Cargar variables locales; en Vercel se usan las variables configuradas en el proyecto.
@@ -14,16 +26,26 @@ load_dotenv(os.path.join(BASE_DIR, "test.env"))
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "clave-segura-local")
-DATABASE = os.environ.get("DATABASE_PATH", os.path.join(BASE_DIR, "sanagustin.db"))
+
+# Función para conectarnos a Neon
+def get_db_connection():
+    db_url = os.environ.get('DATABASE_URL') 
+    
+    # En la nueva versión, usamos row_factory en lugar de cursor_factory
+    conn = psycopg.connect(db_url, row_factory=dict_row)
+    return conn
 
 
 # ---- Conexión a base de datos ----
-def get_db():
+def get_db() -> Connection:
     db = getattr(g, "_database", None)
     if db is None:
-        # Cambiado a DATABASE_URL según lo que configuraste en Vercel
-        db = g._database = psycopg2.connect(os.environ.get("DATABASE_URL"))
+        db_url = os.environ.get("DATABASE_URL")
+        if not db_url:
+            raise ValueError("La variable de entorno DATABASE_URL no está configurada.")
+        db = g._database = psycopg.connect(db_url)
     return db
+
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -53,9 +75,8 @@ def about():
 @app.route("/referencias.html", methods=["GET", "POST"])
 def referencias():
     db = get_db()
-    cursor = db.cursor() # Abrimos el cursor de Postgres
-    
-    # Si el usuario envía una nueva reseña
+    cursor = db.cursor()
+
     if request.method == "POST":
         nombre = request.form.get("nombre", "Anónimo").strip()
         comentario = request.form.get("comentario", "").strip()
@@ -63,55 +84,60 @@ def referencias():
             calificacion = float(request.form.get("calificacion", 5.0))
         except ValueError:
             calificacion = 5.0
-            
-        cursor.execute(
-            "INSERT INTO reviews (nombre, comentario, calificacion) VALUES (%s, %s, %s)", 
-            (nombre, comentario, calificacion)
-        )
-        db.commit() # Guarda los cambios
 
-    # Preparar los datos para mostrar
+        cursor.execute(
+            "INSERT INTO reviews (nombre, comentario, calificacion) VALUES (%s, %s, %s)",
+            (nombre, comentario, calificacion),
+        )
+        db.commit()
+
     filtro = request.args.get("stars")
-    
+
     if filtro:
-        # Cambiamos ? por %s
-        cursor.execute("SELECT nombre, comentario, calificacion, date(fecha) FROM reviews WHERE CAST(calificacion AS INTEGER) = %s ORDER BY fecha DESC", (int(filtro),))
+        cursor.execute(
+            "SELECT nombre, comentario, calificacion, date(fecha) FROM reviews WHERE CAST(calificacion AS INTEGER) = %s ORDER BY fecha DESC",
+            (int(filtro),),
+        )
     else:
-        cursor.execute("SELECT nombre, comentario, calificacion, date(fecha) FROM reviews ORDER BY fecha DESC")
-        
+        cursor.execute(
+            "SELECT nombre, comentario, calificacion, date(fecha) FROM reviews ORDER BY fecha DESC"
+        )
+
     reviews = cursor.fetchall()
-    
-    # Obtener todas las calificaciones para la estadística tipo Amazon
+
     cursor.execute("SELECT calificacion FROM reviews")
     all_ratings = [row[0] for row in cursor.fetchall()]
-    
-    cursor.close() # Cerramos el cursor al terminar las consultas
-    
+
+    cursor.close()
+
     total_reviews = len(all_ratings)
     promedio = sum(all_ratings) / total_reviews if total_reviews > 0 else 0.0
-    
-    # Contar cuántas reseñas hay por cada nivel de estrella
+
     estrellas_count = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
     for r in all_ratings:
         nivel = int(r)
         if nivel in estrellas_count:
             estrellas_count[nivel] += 1
-            
-    estrellas_pct = {k: (v / total_reviews * 100 if total_reviews > 0 else 0) for k, v in estrellas_count.items()}
 
-    return render_with_user("referencias.html", 
-                            reviews=reviews, 
-                            total=total_reviews, 
-                            promedio=round(promedio, 1), 
-                            pct=estrellas_pct,
-                            filtro=filtro)
+    estrellas_pct = {
+        k: (v / total_reviews * 100 if total_reviews > 0 else 0)
+        for k, v in estrellas_count.items()
+    }
 
-# contacto GET: sirve contacto.html; POST: procesa y envía correo
+    return render_with_user(
+        "referencias.html",
+        reviews=reviews,
+        total=total_reviews,
+        promedio=round(promedio, 1),
+        pct=estrellas_pct,
+        filtro=filtro,
+    )
+
+
 @app.route("/contacto", methods=["GET", "POST"])
 @app.route("/contacto.html", methods=["GET", "POST"])
 def contacto():
     if request.method == "POST":
-        # Tomar campos del formulario
         nombre = request.form.get("nombre", "").strip()
         correo = request.form.get("correo", "").strip()
         telefono = request.form.get("telefono", "").strip()
@@ -130,7 +156,6 @@ def contacto():
                 </div>
             """)
 
-        # Asunto y HTML del mensaje
         subject = f"Solicitud de contacto - {nombre or 'Sin nombre'}"
         html_content = """
         <html>
@@ -159,13 +184,11 @@ def contacto():
             CORREO=(correo or "—"),
             TELEFONO=(telefono or "—"),
             PROYECTO=(proyecto or "—"),
-            MENSAJE=(mensaje.replace("\n", "<br>") if mensaje else "<em>Sin mensaje</em>")
+            MENSAJE=(mensaje.replace("\n", "<br>") if mensaje else "<em>Sin mensaje</em>"),
         )
 
-        # Asignar API Key a Resend
         resend.api_key = RESEND_API_KEY
 
-        # Configurar parámetros del correo
         email_params = {
             "from": "San Agustín Cocinas <contacto@sanagustincocinas.com>",
             "to": [RECEIVER_EMAIL],
@@ -176,21 +199,17 @@ def contacto():
         if correo:
             email_params["reply_to"] = correo
 
-        # Adjuntar archivo si existe
         file = request.files.get("archivo")
         if file and getattr(file, "filename", None):
             file_bytes = file.read()
             if file_bytes:
-                email_params["attachments"] = [{
-                    "filename": file.filename,
-                    "content": list(file_bytes)
-                }]
+                email_params["attachments"] = [
+                    {"filename": file.filename, "content": list(file_bytes)}
+                ]
 
-        # Enviar mediante la API de Resend
         try:
             resend.Emails.send(email_params)
             return redirect(url_for("contacto") + "?exito=1")
-
         except Exception as e:
             print("Error enviando correo con Resend:", type(e).__name__, e)
             return render_template_string("""
@@ -203,11 +222,99 @@ def contacto():
 
     return render_with_user("contacto.html")
 
+
 @app.route("/admin")
 def admin():
     if "usuario" not in session:
         return redirect(url_for("login"))
-    return render_with_user("admin.html")
+        
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Consultamos todos los proyectos de la tabla real
+        cursor.execute("SELECT * FROM proyectos ORDER BY id DESC")
+        proyectos = cursor.fetchall()
+        
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error al conectar con la base de datos: {e}")
+        proyectos = [] 
+        
+    return render_with_user("admin.html", proyectos=proyectos)
+
+
+@app.route('/admin/proyectos/eliminar/<int:id>', methods=['POST'])
+def eliminar_proyecto(id):
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+        
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Ejecutamos el borrado filtrando por el ID de tu tabla
+        cursor.execute("DELETE FROM proyectos WHERE id = %s", (id,))
+        conn.commit() 
+        
+        cursor.close()
+        conn.close()
+        print(f"Proyecto con ID {id} eliminado con éxito")
+        
+    except Exception as e:
+        print(f"Ocurrió un error al eliminar: {e}")
+        
+    return redirect(url_for('admin'))
+
+@app.route('/admin/proyectos/editar/<int:id>', methods=['POST'])
+def editar_proyecto(id):
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+        
+    # Recibimos los datos del formulario (Modal)
+    titulo = request.form.get('titulo')
+    fecha = request.form.get('fecha')
+    descripcion = request.form.get('descripcion')
+    imagen_file = request.files.get('imagen')
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Evaluamos si se seleccionó una NUEVA imagen
+        if imagen_file and imagen_file.filename != '':
+            filename = secure_filename(imagen_file.filename)
+            
+            # Guardamos la imagen en la carpeta static/uploads
+            upload_path = os.path.join('static', 'uploads')
+            os.makedirs(upload_path, exist_ok=True)
+            imagen_file.save(os.path.join(upload_path, filename))
+
+            # Actualizamos TODOS los campos en Neon, incluyendo la nueva imagen
+            cursor.execute("""
+                UPDATE proyectos 
+                SET titulo = %s, fecha = %s, descripcion = %s, imagen_url = %s 
+                WHERE id = %s
+            """, (titulo, fecha, descripcion, filename, id))
+
+        else:
+            # Si el campo de imagen quedó vacío, mantenemos la imagen actual y solo actualizamos textos
+            cursor.execute("""
+                UPDATE proyectos 
+                SET titulo = %s, fecha = %s, descripcion = %s 
+                WHERE id = %s
+            """, (titulo, fecha, descripcion, id))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print(f"Proyecto {id} actualizado correctamente.")
+
+    except Exception as e:
+        print(f"Error al editar el proyecto: {e}")
+
+    return redirect(url_for('admin'))
 
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login.html", methods=["GET", "POST"])
@@ -219,30 +326,110 @@ def login():
         try:
             db = get_db()
             cursor = db.cursor()
-            
-            # 1. Pedimos las columnas explícitamente para evitar problemas de orden
-            cursor.execute("SELECT id, usuario, password FROM usuarios WHERE usuario = %s", (usuario_input,))
+            cursor.execute(
+                "SELECT id, usuario, password FROM usuarios WHERE usuario = %s",
+                (usuario_input,),
+            )
             user = cursor.fetchone()
             cursor.close()
 
-            # 2. Verificamos si el usuario existe y si la contraseña coincide
             if user and user[2] == password_input:
-                session["usuario"] = user[1] # Guardamos solo el nombre de usuario
+                session["usuario"] = user[1]
                 return redirect(url_for("admin"))
             else:
                 return render_with_user("login.html", error="Credenciales incorrectas")
-                
+
         except Exception as e:
-            # Si hay un error de conexión con Neon, lo mostraremos en pantalla
-            return render_with_user("login.html", error=f"Error de base de datos: {str(e)}")
+            return render_with_user(
+                "login.html", error=f"Error de base de datos: {str(e)}"
+            )
 
     return render_with_user("login.html")
 
-# ---- LOGOUT ----
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for("index"))
+
+
+# ---- RUTA PÚBLICA: Mostrar todos los proyectos ----
+@app.route("/proyectos")
+@app.route("/proyectos.html")
+def proyectos():
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(
+        "SELECT id, titulo, descripcion, date(fecha), imagen_url FROM proyectos ORDER BY fecha DESC, id DESC"
+    )
+    proyectos_db = cursor.fetchall()
+    cursor.close()
+
+    lista_proyectos = []
+    for p in proyectos_db:
+        lista_proyectos.append(
+            {
+                "id": p[0],
+                "titulo": p[1],
+                "descripcion": p[2],
+                "fecha": str(p[3]),
+                "imagen_url": p[4],
+            }
+        )
+
+    return render_with_user("proyectos.html", proyectos=lista_proyectos)
+
+
+# ---- RUTAS ADMIN: Gestión de proyectos ----
+@app.route("/admin/proyectos/crear", methods=["POST"])
+def admin_crear_proyecto():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    titulo = request.form.get("titulo", "").strip()
+    descripcion = request.form.get("descripcion", "").strip()
+    fecha = request.form.get("fecha")
+    archivo_imagen = request.files.get("imagen")
+
+    if not titulo or not archivo_imagen:
+        return redirect(url_for("admin") + "?error=campos_requeridos")
+
+    file_bytes = archivo_imagen.read()
+    mime_type = archivo_imagen.mimetype or "image/jpeg"
+    base64_encoded = base64.b64encode(file_bytes).decode("utf-8")
+    imagen_url = f"data:{mime_type};base64,{base64_encoded}"
+
+    db = get_db()
+    cursor = db.cursor()
+    if fecha:
+        cursor.execute(
+            "INSERT INTO proyectos (titulo, descripcion, fecha, imagen_url) VALUES (%s, %s, %s, %s)",
+            (titulo, descripcion, fecha, imagen_url),
+        )
+    else:
+        cursor.execute(
+            "INSERT INTO proyectos (titulo, descripcion, imagen_url) VALUES (%s, %s, %s)",
+            (titulo, descripcion, imagen_url),
+        )
+
+    db.commit()
+    cursor.close()
+
+    return redirect(url_for("admin") + "?exito=proyecto_creado")
+
+
+@app.route("/admin/proyectos/eliminar/<int:proyecto_id>", methods=["POST"])
+def admin_eliminar_proyecto(proyecto_id):
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM proyectos WHERE id = %s", (proyecto_id,))
+    db.commit()
+    cursor.close()
+
+    return redirect(url_for("admin") + "?exito=proyecto_eliminado")
 
 
 # ---- Archivos estáticos ----
@@ -267,84 +454,3 @@ def serve_html(filename):
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-# -------------------------------------------------------------
-# RUTA PÚBLICA: Mostrar todos los proyectos
-# -------------------------------------------------------------
-@app.route("/proyectos")
-@app.route("/proyectos.html")
-def proyectos():
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("SELECT id, titulo, descripcion, date(fecha), imagen_url FROM proyectos ORDER BY fecha DESC, id DESC")
-    proyectos_db = cursor.fetchall()
-    cursor.close()
-
-    lista_proyectos = []
-    for p in proyectos_db:
-        lista_proyectos.append({
-            "id": p[0],
-            "titulo": p[1],
-            "descripcion": p[2],
-            "fecha": str(p[3]),
-            "imagen_url": p[4]
-        })
-
-    return render_with_user("proyectos.html", proyectos=lista_proyectos)
-
-
-# -------------------------------------------------------------
-# RUTAS ADMIN: Gestión de proyectos (Subir y Eliminar)
-# -------------------------------------------------------------
-@app.route("/admin/proyectos/crear", methods=["POST"])
-def admin_crear_proyecto():
-    if "usuario" not in session:
-        return redirect(url_for("login"))
-
-    titulo = request.form.get("titulo", "").strip()
-    descripcion = request.form.get("descripcion", "").strip()
-    fecha = request.form.get("fecha")
-    archivo_imagen = request.files.get("imagen")
-
-    if not titulo or not archivo_imagen:
-        return redirect(url_for("admin") + "?error=campos_requeridos")
-
-    # Convertir la imagen subida a Base64
-    file_bytes = archivo_imagen.read()
-    mime_type = archivo_imagen.mimetype or "image/jpeg"
-    base64_encoded = base64.b64encode(file_bytes).decode("utf-8")
-    imagen_url = f"data:{mime_type};base64,{base64_encoded}"
-
-    db = get_db()
-    cursor = db.cursor()
-    if fecha:
-        cursor.execute(
-            "INSERT INTO proyectos (titulo, descripcion, fecha, imagen_url) VALUES (%s, %s, %s, %s)",
-            (titulo, descripcion, fecha, imagen_url)
-        )
-    else:
-        cursor.execute(
-            "INSERT INTO proyectos (titulo, descripcion, imagen_url) VALUES (%s, %s, %s)",
-            (titulo, descripcion, imagen_url)
-        )
-
-    db.commit()
-    cursor.close()
-
-    return redirect(url_for("admin") + "?exito=proyecto_creado")
-
-
-@app.route("/admin/proyectos/eliminar/<int:proyecto_id>", methods=["POST"])
-def admin_eliminar_proyecto(proyecto_id):
-    if "usuario" not in session:
-        return redirect(url_for("login"))
-
-    db = get_db()
-    cursor = db.cursor()
-    cursor.execute("DELETE FROM proyectos WHERE id = %s", (proyecto_id,))
-    db.commit()
-    cursor.close()
-
-    return redirect(url_for("admin") + "?exito=proyecto_eliminado")
-

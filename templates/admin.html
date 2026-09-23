@@ -8,6 +8,155 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
+
+    /* Estilos para tablas en el panel de administración */
+    .table-admin {
+      color: #fff;
+      border-color: rgba(191, 168, 136, 0.2);
+    }
+    .table-admin thead th {
+      color: var(--gold);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(191, 168, 136, 0.4);
+    }
+    .table-admin tbody td {
+      vertical-align: middle;
+      background-color: transparent;
+      color: #ddd;
+    }
+    .table-admin tbody tr:hover td {
+      background-color: rgba(191, 168, 136, 0.05);
+    }
+
+    /* ==========================================================================
+       ESTILOS DEL MENÚ DE NAVEGACIÓN ADMINISTRATIVO
+       ========================================================================== */
+    .admin-menu-card {
+      background-color: #2a2f3a;
+      border: 1px solid rgba(191, 168, 136, 0.25);
+      border-radius: 16px;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #fff;
+      display: block;
+      height: 100%;
+    }
+    .admin-menu-card:hover {
+      background-color: #313745;
+      border-color: var(--gold);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    .admin-menu-card i {
+      font-size: 50px;
+      color: var(--gold);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    .admin-menu-card:hover i {
+      transform: scale(1.1);
+    }
+    .admin-menu-card h4 {
+      font-weight: 600;
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .admin-menu-card p {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+    .btn-volver {
+      background: transparent;
+      color: #ccc;
+      border: 1px solid #444;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      margin-bottom: 25px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    .btn-volver:hover {
+      background: #444;
+      color: #fff;
+      border-color: #666;
+    }
+
+    /* ==========================================================================
+       ESTILOS DEL PANEL DE ADMINISTRACIÓN (FORMULARIOS)
+       ========================================================================== */
+    .admin-card {
+      background-color: #2a2f3a;
+      border: 1px solid rgba(191, 168, 136, 0.25);
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      padding: 40px;
+      color: #fff;
+    }
+    .admin-card h3 {
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #ccc;
+      letter-spacing: 0.5px;
+    }
+    .form-control {
+      background-color: #1e232d;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 8px;
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      background-color: #1e232d;
+      color: #fff;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 0.25rem rgba(191, 168, 136, 0.25);
+    }
+    .form-control::placeholder {
+      color: #666;
+    }
+    /* Estilo personalizado para el botón de subir archivo */
+    .form-control::file-selector-button {
+      background-color: #3a3f4a;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin-right: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .form-control::file-selector-button:hover {
+      background-color: var(--gold);
+      color: #1e232d;
+    }
+    .btn-gold {
+      background-color: var(--gold);
+      color: #1e232d;
+      font-weight: 700;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .btn-gold:hover {
+      background-color: #a89172;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(191, 168, 136, 0.4);
+    }
+
     :root{
       --gold:#bfa888;
     }
@@ -298,7 +447,7 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-user-circle me-1 text-warning"></i>
-                {{ session['username'] }}
+                {{ session['usuario'] }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="/admin">Mi cuenta</a></li>
@@ -319,39 +468,278 @@
     <h1 class="mb-3">Panel Administrativo</h1>
     <p class="lead mb-4">Bienvenido, <strong>{{ session['usuario'] }}</strong>.</p>
     <p>Aquí podrás gestionar los modelos, materiales y proyectos.</p>
-    <hr class="bg-light">
-    <section class="admin-proyectos" style="max-width: 800px; margin: 40px auto; padding: 20px;">
-        <h2>Gestión de Proyectos</h2>
+    <hr class="bg-light mb-5">
 
-        <!-- Formulario para agregar proyecto -->
-        <form action="/admin/proyectos/crear" method="POST" enctype="multipart/form-data" style="background: #f9f9f9; color: #333; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-            <h3 style="color: #333;">Agregar Nuevo Proyecto</h3>
+    <!-- CONTENEDOR PRINCIPAL DE VISTAS -->
+    <div id="dashboard-views" style="max-width: 900px; margin: 0 auto; padding: 0 15px;">
+        
+        <!-- VISTA 1: MENÚ PRINCIPAL -->
+        <div id="vista-menu-principal" class="vista-admin">
+            <h3 class="text-center mb-4" style="color: var(--gold); font-weight: 600;">¿Qué deseas gestionar?</h3>
+            <div class="row justify-content-center g-4">
+                <div class="col-md-5">
+                    <div class="admin-menu-card" onclick="mostrarVista('vista-submenu-proyectos')">
+                        <i class="fa-solid fa-hammer"></i>
+                        <h4>Proyectos</h4>
+                        <p class="mt-2 mb-0">Crear, editar o eliminar proyectos</p>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="admin-menu-card" onclick="mostrarVista('vista-submenu-referencias')">
+                        <i class="fa-solid fa-star"></i>
+                        <h4>Referencias</h4>
+                        <p class="mt-2 mb-0">Gestionar reseñas y listados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 2: SUBMENÚ PROYECTOS -->
+        <div id="vista-submenu-proyectos" class="vista-admin d-none">
+            <button class="btn-volver" onclick="mostrarVista('vista-menu-principal')">
+                <i class="fa-solid fa-arrow-left me-2"></i> Menú Principal
+            </button>
+            <h3 class="text-center mb-4" style="color: var(--gold); font-weight: 600;">Gestión de Proyectos</h3>
+            <div class="row justify-content-center g-4">
+                <div class="col-md-4">
+                    <div class="admin-menu-card" onclick="mostrarVista('vista-crear-proyecto')">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <h4>Crear</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Cambiamos el onclick aquí -->
+                    <div class="admin-menu-card" onclick="mostrarVista('vista-eliminar-proyecto')">
+                        <i class="fa-solid fa-trash-can" style="color: #dc3545;"></i>
+                        <h4>Eliminar</h4>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="admin-menu-card" onclick="mostrarVista('vista-editar-lista')">
+                        <i class="fa-solid fa-pen-to-square" style="color: #0dcaf0;"></i>
+                        <h4>Editar</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 3: SUBMENÚ REFERENCIAS -->
+        <div id="vista-submenu-referencias" class="vista-admin d-none">
+            <button class="btn-volver" onclick="mostrarVista('vista-menu-principal')">
+                <i class="fa-solid fa-arrow-left me-2"></i> Menú Principal
+            </button>
+            <h3 class="text-center mb-4" style="color: var(--gold); font-weight: 600;">Gestión de Referencias</h3>
+            <div class="row justify-content-center g-4">
+                <div class="col-md-5">
+                    <div class="admin-menu-card" onclick="alert('Listado de referencias en construcción')">
+                        <i class="fa-solid fa-list-check"></i>
+                        <h4>Mostrar Listado</h4>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="admin-menu-card" onclick="alert('Borrado de referencias en construcción')">
+                        <i class="fa-solid fa-eraser"></i>
+                        <h4>Borrar Seleccionados</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 4: ACCIÓN - CREAR PROYECTO -->
+        <div id="vista-crear-proyecto" class="vista-admin d-none">
+            <button class="btn-volver" onclick="mostrarVista('vista-submenu-proyectos')">
+                <i class="fa-solid fa-arrow-left me-2"></i> Volver a Proyectos
+            </button>
             
-            <div style="margin-bottom: 12px; text-align: left;">
-                <label>Título del Proyecto *</label><br>
-                <input type="text" name="titulo" required style="width: 100%; padding: 8px;">
+            <div class="admin-card">
+                <h3 class="text-center"><i class="fa-solid fa-folder-plus me-2"></i> Agregar Nuevo Proyecto</h3>
+                <form action="/admin/proyectos/crear" method="POST" enctype="multipart/form-data">
+                    <div class="mb-4 text-start">
+                        <label class="form-label">Título del Proyecto <span class="text-danger">*</span></label>
+                        <input type="text" name="titulo" class="form-control" placeholder="Ej. Cocina Residencial Minimalista" required>
+                    </div>
+                    <div class="mb-4 text-start">
+                        <label class="form-label">Descripción del Proyecto</label>
+                        <textarea name="descripcion" class="form-control" rows="4" placeholder="Describe los materiales, tonos y detalles especiales..."></textarea>
+                    </div>
+                    <div class="row text-start">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">Fecha del Proyecto</label>
+                            <input type="date" name="fecha" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">Imagen Principal <span class="text-danger">*</span></label>
+                            <input type="file" name="imagen" class="form-control" accept="image/*" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-gold">
+                        <i class="fa-solid fa-cloud-arrow-up me-2"></i> Guardar Proyecto
+                    </button>
+                </form>
             </div>
+        </div>
 
-            <div style="margin-bottom: 12px; text-align: left;">
-                <label>Descripción</label><br>
-                <textarea name="descripcion" rows="3" style="width: 100%; padding: 8px;"></textarea>
+        <!-- VISTA 5: ACCIÓN - ELIMINAR PROYECTO -->
+        <div id="vista-eliminar-proyecto" class="vista-admin d-none">
+            <button class="btn-volver" onclick="mostrarVista('vista-submenu-proyectos')">
+                <i class="fa-solid fa-arrow-left me-2"></i> Volver a Proyectos
+            </button>
+            
+            <div class="admin-card">
+                <h3 class="text-center mb-2" style="color: #dc3545;">
+                    <i class="fa-solid fa-trash-can me-2"></i> Eliminar Proyectos
+                </h3>
+                <p class="text-center mb-4" style="color: #aaa; font-size: 0.9rem;">
+                    Selecciona el proyecto que deseas eliminar. Esta acción es irreversible.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-admin">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 15%;">Imagen</th>
+                                <th scope="col" style="width: 60%;">Título del Proyecto</th>
+                                <th scope="col" style="width: 25%; text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí usamos Jinja para iterar sobre los proyectos -->
+                            {% if proyectos %}
+                                {% for proyecto in proyectos %}
+                                <tr>
+                                    <td>
+                                        <!-- Ajusta la ruta dependiendo de cómo guardes las imágenes -->
+                                        <img src="{{ url_for('static', filename='uploads/' + proyecto.imagen_url) }}" 
+                                             alt="Imagen" 
+                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #444;">
+                                    </td>
+                                    <td class="fw-bold">{{ proyecto.titulo }}</td>
+                                    <td class="text-center">
+                                        <form action="/admin/proyectos/eliminar/{{ proyecto.id }}" method="POST" onsubmit="return confirm('¿Estás COMPLETAMENTE seguro de eliminar este proyecto?');">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm px-3" style="border-radius: 6px;">
+                                                <i class="fa-solid fa-trash me-1"></i> Borrar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-muted">
+                                        <i class="fa-solid fa-folder-open mb-2" style="font-size: 24px;"></i><br>
+                                        Aún no hay proyectos registrados.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
 
-            <div style="margin-bottom: 12px; text-align: left;">
-                <label>Fecha del Proyecto</label><br>
-                <input type="date" name="fecha" style="padding: 8px;">
+        <!-- VISTA 6: ACCIÓN - EDITAR PROYECTO (LISTA) -->
+        <div id="vista-editar-lista" class="vista-admin d-none">
+            <button class="btn-volver" onclick="mostrarVista('vista-submenu-proyectos')">
+                <i class="fa-solid fa-arrow-left me-2"></i> Volver a Proyectos
+            </button>
+            
+            <div class="admin-card">
+                <h3 class="text-center mb-2" style="color: #0dcaf0;">
+                    <i class="fa-solid fa-pen-to-square me-2"></i> Editar Proyectos
+                </h3>
+                <p class="text-center mb-4" style="color: #aaa; font-size: 0.9rem;">
+                    Selecciona el proyecto que deseas modificar.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-admin">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 15%;">Imagen</th>
+                                <th scope="col" style="width: 60%;">Título del Proyecto</th>
+                                <th scope="col" style="width: 25%; text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if proyectos %}
+                                {% for proyecto in proyectos %}
+                                <tr>
+                                    <td>
+                                        <img src="{{ url_for('static', filename='uploads/' + proyecto.imagen_url) }}" 
+                                             alt="Imagen" 
+                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #444;">
+                                    </td>
+                                    <td class="fw-bold">{{ proyecto.titulo }}</td>
+                                    <td class="text-center">
+                                        <!-- Botón que abre el modal de edición específico de este proyecto -->
+                                        <button class="btn btn-outline-info btn-sm px-3" data-bs-toggle="modal" data-bs-target="#modalEditar{{ proyecto.id }}" style="border-radius: 6px;">
+                                            <i class="fa-solid fa-pen me-1"></i> Editar
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- MODAL DE EDICIÓN PARA ESTE PROYECTO -->
+                                <div class="modal fade" id="modalEditar{{ proyecto.id }}" tabindex="-1" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content" style="background-color: #2a2f3a; border: 1px solid var(--gold);">
+                                      <div class="modal-header" style="border-bottom: 1px solid rgba(191,168,136,0.2);">
+                                        <h5 class="modal-title" style="color: var(--gold);">Editar Proyecto</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                      </div>
+                                      <form action="/admin/proyectos/editar/{{ proyecto.id }}" method="POST" enctype="multipart/form-data">
+                                          <div class="modal-body text-start">
+                                              
+                                              <!-- Título -->
+                                              <div class="mb-3">
+                                                  <label class="form-label" style="color: #aaa; font-size: 0.9rem;">Nombre del Proyecto *</label>
+                                                  <input type="text" name="titulo" class="form-control" style="background: rgba(255,255,255,0.05); border: 1px solid #444; color: white;" value="{{ proyecto.titulo }}" required>
+                                              </div>
+
+                                              <!-- Fecha -->
+                                              <div class="mb-3">
+                                                  <label class="form-label" style="color: #aaa; font-size: 0.9rem;">Fecha *</label>
+                                                  <input type="date" name="fecha" class="form-control" style="background: rgba(255,255,255,0.05); border: 1px solid #444; color: white;" value="{{ proyecto.fecha }}" required>
+                                              </div>
+
+                                              <!-- Descripción -->
+                                              <div class="mb-3">
+                                                  <label class="form-label" style="color: #aaa; font-size: 0.9rem;">Descripción *</label>
+                                                  <textarea name="descripcion" class="form-control" rows="3" style="background: rgba(255,255,255,0.05); border: 1px solid #444; color: white;" required>{{ proyecto.descripcion }}</textarea>
+                                              </div>
+
+                                              <!-- Imagen Opcional -->
+                                              <div class="mb-3">
+                                                  <label class="form-label" style="color: #aaa; font-size: 0.9rem;">Nueva Imagen (Opcional)</label>
+                                                  <input type="file" name="imagen" class="form-control" style="background: rgba(255,255,255,0.05); border: 1px solid #444; color: white;" accept="image/*">
+                                                  <small style="color: #888; font-size: 0.8rem;">Deja este campo vacío si deseas conservar la imagen actual.</small>
+                                              </div>
+
+                                          </div>
+                                          <div class="modal-footer" style="border-top: 1px solid rgba(191,168,136,0.2);">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border: none; background: #444;">Cancelar</button>
+                                            <button type="submit" class="btn-gold" style="width: auto; margin-top: 0; padding: 8px 20px;">Guardar Cambios</button>
+                                          </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- FIN DEL MODAL -->
+
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-4">Aún no hay proyectos registrados.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
 
-            <div style="margin-bottom: 15px; text-align: left;">
-                <label>Imagen del Proyecto *</label><br>
-                <input type="file" name="imagen" accept="image/*" required style="padding: 8px 0;">
-            </div>
+    </div> <!-- Fin Dashboard Views -->
 
-            <button type="submit" style="background: #bfa888; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">Guardar Proyecto</button>
-        </form>
-    </section>  
-
-    <hr class="bg-light mt-5"> 
+    <hr class="bg-light mt-5">
     <p>Usa el menú de tu usuario (arriba a la derecha) para salir o revisar tu cuenta.</p>
   </div>
 
@@ -372,6 +760,19 @@
   <a class="whatsapp-float" href="https://wa.me/528181382881" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
   <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function mostrarVista(idVista) {
+      // 1. Buscamos todas las secciones con la clase 'vista-admin' y las ocultamos
+      document.querySelectorAll('.vista-admin').forEach(function(vista) {
+        vista.classList.add('d-none');
+      });
+      // 2. Quitamos la clase de ocultar (d-none) solo a la vista que queremos mostrar
+      document.getElementById(idVista).classList.remove('d-none');
+      // 3. Subimos la pantalla suavemente por si el usuario hizo scroll hacia abajo
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
 
 </body>
 </html>
