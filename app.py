@@ -232,18 +232,45 @@ def admin():
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        # Consultamos todos los proyectos de la tabla real
+        # Consultar proyectos
         cursor.execute("SELECT * FROM proyectos ORDER BY id DESC")
         proyectos = cursor.fetchall()
+        
+        # Consultar reseñas de la tabla 'reviews'
+        cursor.execute("SELECT * FROM reviews ORDER BY id DESC")
+        referencias = cursor.fetchall()
         
         cursor.close()
         conn.close()
     except Exception as e:
-        print(f"Error al conectar con la base de datos: {e}")
-        proyectos = [] 
+        print(f"Error al consultar la base de datos: {e}")
+        proyectos = []
+        referencias = []
         
-    return render_with_user("admin.html", proyectos=proyectos)
+    return render_with_user("admin.html", proyectos=proyectos, referencias=referencias)
 
+
+@app.route('/admin/referencias/eliminar/<int:id>', methods=['POST'])
+def eliminar_referencia(id):
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+        
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Borrado en la tabla 'reviews'
+        cursor.execute("DELETE FROM reviews WHERE id = %s", (id,))
+        conn.commit()
+        
+        cursor.close()
+        conn.close()
+        print(f"Reseña con ID {id} eliminada correctamente.")
+        
+    except Exception as e:
+        print(f"Error al eliminar la reseña: {e}")
+        
+    return redirect(url_for('admin', vista='vista-lista-referencias'))
 
 @app.route('/admin/proyectos/eliminar/<int:id>', methods=['POST'])
 def eliminar_proyecto(id):
@@ -265,7 +292,7 @@ def eliminar_proyecto(id):
     except Exception as e:
         print(f"Ocurrió un error al eliminar: {e}")
         
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin', vista='vista-eliminar-proyecto'))
 
 @app.route('/admin/proyectos/editar/<int:id>', methods=['POST'])
 def editar_proyecto(id):
@@ -314,7 +341,7 @@ def editar_proyecto(id):
     except Exception as e:
         print(f"Error al editar el proyecto: {e}")
 
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin', vista='vista-editar-lista'))
 
 @app.route("/login", methods=["GET", "POST"])
 @app.route("/login.html", methods=["GET", "POST"])

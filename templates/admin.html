@@ -528,18 +528,13 @@
             <button class="btn-volver" onclick="mostrarVista('vista-menu-principal')">
                 <i class="fa-solid fa-arrow-left me-2"></i> Menú Principal
             </button>
-            <h3 class="text-center mb-4" style="color: var(--gold); font-weight: 600;">Gestión de Referencias</h3>
+            <h3 class="text-center mb-4" style="color: var(--gold); font-weight: 600;">Gestión de Reseñas / Referencias</h3>
             <div class="row justify-content-center g-4">
-                <div class="col-md-5">
-                    <div class="admin-menu-card" onclick="alert('Listado de referencias en construcción')">
+                <div class="col-md-6">
+                    <div class="admin-menu-card" onclick="mostrarVista('vista-lista-referencias')">
                         <i class="fa-solid fa-list-check"></i>
-                        <h4>Mostrar Listado</h4>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="admin-menu-card" onclick="alert('Borrado de referencias en construcción')">
-                        <i class="fa-solid fa-eraser"></i>
-                        <h4>Borrar Seleccionados</h4>
+                        <h4>Mostrar y Gestionar Listado</h4>
+                        <p class="mt-2 mb-0">Visualiza todas las reseñas de clientes y elimina las que desees.</p>
                     </div>
                 </div>
             </div>
@@ -737,6 +732,62 @@
             </div>
         </div>
 
+        <!-- VISTA 7: ACCIÓN - LISTA Y ELIMINACIÓN DE REFERENCIAS -->
+        <div id="vista-lista-referencias" class="vista-admin d-none">
+            <button class="btn-volver" onclick="mostrarVista('vista-submenu-referencias')">
+                <i class="fa-solid fa-arrow-left me-2"></i> Volver a Referencias
+            </button>
+            
+            <div class="admin-card">
+                <h3 class="text-center mb-2" style="color: var(--gold);">
+                    <i class="fa-solid fa-comments me-2"></i> Reseñas de Clientes
+                </h3>
+                <p class="text-center mb-4" style="color: #aaa; font-size: 0.9rem;">
+                    Listado de testimonios registrados. Haz clic en "Borrar" para eliminar una reseña del sitio.
+                </p>
+
+                <div class="table-responsive">
+                    <table class="table table-admin">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 20%;">Cliente</th>
+                                <th scope="col" style="width: 15%;">Calificación</th>
+                                <th scope="col" style="width: 45%;">Comentario</th>
+                                <th scope="col" style="width: 20%; text-align: center;">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if referencias %}
+                                {% for ref in referencias %}
+                                <tr>
+                                    <td class="fw-bold">{{ ref.nombre }}</td>
+                                    <td style="color: #ffc107;">
+                                        {{ ref.calificacion }} <i class="fa-solid fa-star"></i>
+                                    </td>
+                                    <td style="font-size: 0.9rem; color: #ccc;">"{{ ref.comentario }}"</td>
+                                    <td class="text-center">
+                                        <form action="/admin/referencias/eliminar/{{ ref.id }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta reseña?');">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm px-3" style="border-radius: 6px;">
+                                                <i class="fa-solid fa-trash me-1"></i> Borrar
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="fa-solid fa-comment-slash mb-2" style="font-size: 24px;"></i><br>
+                                        Aún no hay reseñas registradas.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div> <!-- Fin Dashboard Views -->
 
     <hr class="bg-light mt-5">
@@ -763,15 +814,28 @@
 
   <script>
     function mostrarVista(idVista) {
-      // 1. Buscamos todas las secciones con la clase 'vista-admin' y las ocultamos
+      // 1. Ocultamos todas las vistas
       document.querySelectorAll('.vista-admin').forEach(function(vista) {
         vista.classList.add('d-none');
       });
-      // 2. Quitamos la clase de ocultar (d-none) solo a la vista que queremos mostrar
-      document.getElementById(idVista).classList.remove('d-none');
-      // 3. Subimos la pantalla suavemente por si el usuario hizo scroll hacia abajo
+      // 2. Mostramos solo la vista solicitada
+      const vistaObjetivo = document.getElementById(idVista);
+      if (vistaObjetivo) {
+        vistaObjetivo.classList.remove('d-none');
+      }
+      // 3. Subimos la pantalla suavemente
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Al cargar la página, revisamos si Flask nos mandó un parámetro 'vista' en la URL
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const vistaActiva = urlParams.get('vista');
+      
+      if (vistaActiva) {
+        mostrarVista(vistaActiva);
+      }
+    });
   </script>
 
 </body>
